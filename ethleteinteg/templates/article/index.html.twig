@@ -13,6 +13,7 @@
                 <th>Contenu</th>
                 <th>Description</th>
                 <th>Nbrlike</th>
+                <th>User</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -23,7 +24,8 @@
                 <td>{{ article.titre }}</td>
                 <td>{{ article.contenu }}</td>
                 <td>{{ article.description }}</td>
-                <td>{{ article.nbrlike }}</td>
+                <td>{{ article.nbrlike }}</td> 
+                <td>{{article.idUser}}
                 <td>
                     <a href="{{ path('app_article_show', {'idarticle': article.idarticle}) }}">show</a>
                     <a href="{{ path('app_article_edit', {'idarticle': article.idarticle}) }}">edit</a>

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User 
 {
     /**
      * @var int
@@ -26,6 +27,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="adresse", type="string", length=255, nullable=false)
+     * @Assert\NotBlank(message="le champs ne doit pas etre vide")
      */
     private $adresse;
 
@@ -40,6 +42,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=false)
+     * @Assert\Email(message = "The email '{{ value }}' is not a valid email")
      */
     private $email;
 
@@ -47,6 +50,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="nom", type="string", length=255, nullable=false)
+     *  @Assert\NotBlank(message="le champs ne doit pas etre vide")
      */
     private $nom;
 
@@ -54,6 +58,9 @@ class User
      * @var int
      *
      * @ORM\Column(name="num_tel", type="integer", nullable=false)
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 8)
      */
     private $numTel;
 
@@ -68,6 +75,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="prenom", type="string", length=255, nullable=false)
+     *  @Assert\NotBlank(message="le champs ne doit pas etre vide")
      */
     private $prenom;
 
@@ -234,6 +242,11 @@ class User
         $this->idEq = $idEq;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getNom();
     }
 
 
