@@ -38,7 +38,8 @@ class UserController extends AbstractController
      */
     public function new(Request $request, UserRepository $userRepository): Response
     {
-        $user = new User();
+        $role="FORMATEUR";
+        $user = new User($role);
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
