@@ -1,0 +1,35 @@
+<h1>Liste des formateurs</h1>
+<table border="1">
+    <tr>
+        <td>ID</td>
+        <td>Adresee</td>
+        <td>DateNAaissance</td>
+        <td>Nom</td>
+          <td>Prenom</td>
+            <td>Email</td>
+              <td>Numtel</td>
+                <td>Genre</td>
+    </tr>
+    {% for f in listFormateur %}
+        <tr>
+            <td>{{ f.id }}</td>
+            <td>{{ f.adresse }}</td> 
+             <td>{{ f.dateNaissance ? f.dateNaissance|date('Y-m-d') : ''  }}</td>
+              <td>{{ f.nom}}</td>
+            <td>{{ f.prenom}}</td>
+        <td>{{ f.email}}</td>
+        <td>{{ f.numTel}}</td>
+ <td>{{ f.genre}}</td>
+     <td> <button type="button" class="btn btn-success">
+                    Ajouter Affectation
+                      </button>   </td>
+
+<td>
+                          <a href="{{ path('listFormation', {'id': f.id}) }}">Ses Formations</a>
+
+              
+</td>
+          
+        </tr>
+    {% endfor %}
+</table>
