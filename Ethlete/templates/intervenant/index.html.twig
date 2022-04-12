@@ -3,18 +3,18 @@
 {% block title %}Intervenant index{% endblock %}
 
 {% block body %}
-    <h1>Intervenant index</h1>
+    <h1> Liste des Intervenants </h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>IdInter</th>
-                <th>ImageIn</th>
+                <th>Id Intervenant</th>
+                <th>Image Intervenant</th>
                 <th>Nom</th>
                 <th>Prenom</th>
                 <th>Email</th>
                 <th>Telephone</th>
-                <th>IdTypeint</th>
+                <th>Type de l'intervenant</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -29,8 +29,8 @@
                 <td>{{ intervenant.telephone }}</td>
                 <td>{{ intervenant.idTypeint }}</td>
                 <td>
-                    <a href="{{ path('app_intervenant_show', {'idInter': intervenant.idInter}) }}">show</a>
-                    <a href="{{ path('app_intervenant_edit', {'idInter': intervenant.idInter}) }}">edit</a>
+                    <a href="{{ path('app_intervenant_show', {'idInter': intervenant.idInter}) }}">Afficher</a>
+                    <a href="{{ path('app_intervenant_edit', {'idInter': intervenant.idInter}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -41,5 +41,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_intervenant_new') }}">Create new</a>
+    <a href="{{ path('app_intervenant_new') }}">Ajouter</a>
 {% endblock %}

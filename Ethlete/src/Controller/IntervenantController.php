@@ -40,6 +40,18 @@ class IntervenantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('imageIn')->getData();
+            $Filename = md5(uniqid()).'.'.$file->guessExtension();
+            try {
+                $file->move(
+                    $this->getParameter('image_In'),
+                    $Filename
+                );
+            } catch (FileException $e) {
+
+            }
+            $intervenant->setImageIn($Filename);
+
             $entityManager->persist($intervenant);
             $entityManager->flush();
 

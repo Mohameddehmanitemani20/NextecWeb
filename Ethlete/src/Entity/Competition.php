@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Competition
@@ -11,7 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  */
 class Competition
+{  public function __toString()
 {
+    return $this->nom;
+}
     /**
      * @var int
      *

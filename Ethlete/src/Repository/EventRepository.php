@@ -6,7 +6,9 @@ use App\Entity\Evenement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+
 use Doctrine\Persistence\ManagerRegistry;
+
 
 /**
  * @method Evenement|null find($id, $lockMode = null, $lockVersion = null)

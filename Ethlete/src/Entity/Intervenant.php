@@ -3,7 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
+/**
+ * @ORM\Entity
+ * @UniqueEntity("email")
+ */
 /**
  * Intervenant
  *
@@ -13,9 +21,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\IntervenantRepository")
+ * @UniqueEntity(fields={"nom","prenom"}, message="Cet intervenant existe  déjà  .")
  */
 class Intervenant
+{ public function __toString()
 {
+    return $this->nom;
+}
     /**
      * @var int
      *
@@ -35,6 +47,8 @@ class Intervenant
     /**
      * @var string
      *
+     *  @Assert\NotBlank(message=" Le champ du nom doit etre non vide")
+
      * @ORM\Column(name="nom", type="string", length=30, nullable=false)
      */
     private $nom;
@@ -42,14 +56,17 @@ class Intervenant
     /**
      * @var string
      *
+     * @Assert\NotBlank(message="prénom doit etre non vide")
      * @ORM\Column(name="prenom", type="string", length=30, nullable=false)
      */
     private $prenom;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=50, nullable=false)
+     *@Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email."
+     * )
+     * @ORM\Column(name="email", type="string", length=50, unique=true)
      */
     private $email;
 
@@ -67,18 +84,17 @@ class Intervenant
      */
     private $idTypeint;
 
-
     public function getIdInter(): ?int
     {
         return $this->idInter;
     }
 
-    public function getImageIn(): ?string
+    public function getImageIn()
     {
         return $this->imageIn;
     }
 
-    public function setImageIn(string $imageIn): self
+    public function setImageIn( $imageIn)
     {
         $this->imageIn = $imageIn;
 
@@ -108,6 +124,7 @@ class Intervenant
 
         return $this;
     }
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -120,17 +137,6 @@ class Intervenant
         return $this;
     }
 
-    public function getIdTypeint(): ?string
-    {
-        return $this->idTypeint;
-    }
-
-    public function setIdTypeint(string $idTypeint): self
-    {
-        $this->idTypeint= $idTypeint;
-
-        return $this;
-    }
     public function getTelephone(): ?string
     {
         return $this->telephone;
@@ -143,7 +149,17 @@ class Intervenant
         return $this;
     }
 
+    public function getIdTypeint(): ?string
+    {
+        return $this->idTypeint;
+    }
 
+    public function setIdTypeint(string $idTypeint): self
+    {
+        $this->idTypeint = $idTypeint;
+
+        return $this;
+    }
 
 
 }
