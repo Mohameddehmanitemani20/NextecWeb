@@ -45,6 +45,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=false)
+     * @Assert\NotBlank(message="le champs ne doit pas etre vide")
      * @Assert\Email(message = "The email '{{ value }}' is not a valid email")
      */
     private $email;
@@ -54,6 +55,12 @@ class User implements UserInterface
      *
      * @ORM\Column(name="nom", type="string", length=255, nullable=false)
      *  @Assert\NotBlank(message="le champs ne doit pas etre vide")
+     * @Assert\Length(
+     *     min=3,
+     *     max=50,
+     *     minMessage="The first name must be at least 3 characters long",
+     *     maxMessage="The first name cannot be longer than 50 characters"
+     * )
      */
     private $nom;
 
@@ -63,7 +70,10 @@ class User implements UserInterface
      * @ORM\Column(name="num_tel", type="integer", nullable=false)
      * @Assert\Length(
      *      min = 8,
-     *      max = 8)
+     *      max = 8,
+     *      minMessage="le numero de telephone doit etre 8 chiffres",
+     *     maxMessage="le numero de telephone doit etre 8 chiffres"
+     * )
      */
     private $numTel;
 
@@ -79,6 +89,12 @@ class User implements UserInterface
      *
      * @ORM\Column(name="prenom", type="string", length=255, nullable=false)
      *  @Assert\NotBlank(message="le champs ne doit pas etre vide")
+     * @Assert\Length(
+     *     min=3,
+     *     max=50,
+     *     minMessage="The last name must be at least 3 characters long",
+     *     maxMessage="The last name cannot be longer than 50 characters"
+     * )
      */
     private $prenom;
 
@@ -91,6 +107,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=255, nullable=false)
+     * @Assert\NotBlank(message="le champs ne doit pas etre vide")
      */
     private $username;
 
@@ -98,6 +115,7 @@ class User implements UserInterface
      * @var string|null
      *
      * @ORM\Column(name="genre", type="string", length=30, nullable=true)
+     * @Assert\NotBlank(message="le champs ne doit pas etre vide")
      */
     private $genre;
 
@@ -105,6 +123,7 @@ class User implements UserInterface
      * @var int|null
      *
      * @ORM\Column(name="id_eq", type="integer", nullable=true)
+     * @Assert\NotBlank(message="le champs ne doit pas etre vide")
      */
     private $idEq;
 
@@ -265,6 +284,15 @@ class User implements UserInterface
     {
         return $this->getNom();
     }
+
+    public function serialize() {
+        return serialize($this->id);
+        }
+    
+        public function unserialize($data) {
+        $this->id = unserialize($data);
+        }
+    
 
 
 }

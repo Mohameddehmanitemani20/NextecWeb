@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\User;
+use App\src\Controller\SecurityController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
 {
@@ -97,9 +99,20 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
+        $hasAccess = in_array('ROLE_ADMIN', $token->getUser()->getRoles());
+       
+        if ( $hasAccess ){
+                //redirect admin
+                return new RedirectResponse($this->urlGenerator->generate('choice'));
+        }else if(!$hasAccess){
+                //redirect front
+                return new RedirectResponse($this->urlGenerator->generate('profile'));
+        }else{
+             return new RedirectResponse($this->urlGenerator->generate('denied_access'));
+        }
 
-        // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        // For example : return new Redirec tResponse($this->urlGenerator->generate('some_route'));
+       // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     protected function getLoginUrl()
