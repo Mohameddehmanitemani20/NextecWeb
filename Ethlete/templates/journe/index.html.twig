@@ -1,0 +1,39 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Journe index{% endblock %}
+
+{% block body %}
+    <h1>Journe index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IdJourne</th>
+                <th>Numjourne</th>
+                <th>DateJourne</th>
+
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for journe in journes %}
+            <tr>
+                <td>{{ journe.idJourne }}</td>
+                <td>{{ journe.numjourne }}</td>
+                <td>{{ journe.dateJourne }}</td>
+                <td>{{ journe.idCompetition }}</td>
+                <td>
+                    <a href="{{ path('app_journe_show', {'idJourne': journe.idJourne}) }}">show</a>
+                    <a href="{{ path('app_journe_edit', {'idJourne': journe.idJourne}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_journe_new') }}">Create new</a>
+{% endblock %}
