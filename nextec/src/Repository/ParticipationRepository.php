@@ -90,6 +90,26 @@ class ParticipationRepository extends ServiceEntityRepository
  
  return $query->getResult();
 
+           }
+
+           public function nbPartByForm1()
+    
+    {
+ 
+
+    
+ $entityManager=$this->getEntityManager();
+
+ $query=$entityManager
+ ->createQuery("SELECT f FROM APP\Entity\Participation p ,
+  APP\Entity\Formation f where  f.idFormation=p.formation group by  p.formation order by count(p) DESC
+ 
+  ");
+
+
+ 
+ return $query->getResult();
+
            
    
 

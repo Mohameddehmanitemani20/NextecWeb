@@ -159,13 +159,21 @@ class ParticipationController extends AbstractController
        { $em = $this->getDoctrine()->getManager();
         $em->persist($participation);
         $em->flush();
-
+        $message = $this->twilio->messages->create(
+            $p->getNumTel(), // Send text to this number
+            array(
+              'from' => '+14439032479', // My Twilio phone number
+              'body' => 'Hello from Awesome Massages. A reminder that your massage appointment is for today at ' 
+            )
+          );
+   
+         
     
 
-      /*  $p->messages->create("", [
+       $p->messages->create("", [
             "body" => "participé",
             "from" => $p->getNumTel()
-        ]);*/
+        ]);
       
     }
         return $this->redirectToRoute('list1'); 

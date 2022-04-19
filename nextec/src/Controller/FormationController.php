@@ -7,7 +7,9 @@ use App\Entity\Formation;
 use App\Entity\Search;
 use App\Form\FormationType;
 use App\Form\SearchForm;
+use App\Form\TriForm;
 use App\Repository\FormationRepository;
+use App\Repository\ParticipationRepository;
 use ContainerF8itYSJ\PaginatorInterface_82dac15;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
@@ -30,7 +32,7 @@ class FormationController extends AbstractController
     public function index(FormationRepository $repository,PaginatorInterface  $paginator,EntityManagerInterface $entityManager,Request $request): Response
     {
       
-   
+        
         $form=$this->createForm(SearchForm::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
@@ -44,6 +46,12 @@ class FormationController extends AbstractController
        {$formations = $entityManager
             ->getRepository(Formation::class)
             ->findAll();}
+
+
+
+          //  if ($form1->isSubmitted())
+            //{ $formations = $repository
+              //  ->tri();}
             // $formations=     $paginator->paginate(
             //     $donnees, // Requête contenant les données à paginer (ici nos articles)
             //     $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
@@ -83,6 +91,19 @@ class FormationController extends AbstractController
          
         return $this->render('formation/listWithSearch.html.twig', [
             'formations' => $formations
+        ]);
+        }
+ /**
+     * @Route("/trier", name="trierD")
+      */
+      public function trierF(FormationRepository $repository, Request $request)
+      {
+        $form=$this->createForm(SearchForm::class);
+      
+        $formations=$repository->tri();
+         
+        return $this->render('formation/index.html.twig', [
+            'formations' => $formations,'form'=>$form->createView()
         ]);
         }
 
@@ -168,17 +189,19 @@ class FormationController extends AbstractController
     {  $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
         $dompdf = new Dompdf($pdfOptions);
-        
+       $img='data:image;base64,'.base64_encode(@file_get_contents('C:\Users\pc\OneDrive\Pictures\logo.jpeg'));
+     
         $html=$this->render('formation/pdfshow.html.twig', [
             'Formation' => $f,
             'date Début' => $f->getDateDebut()->format( 'd/m/Y'),
             'date Fin' => $f->getDateFin()->format( 'd/m/Y'),
             'Programme' => $f->getProgramme(),
-
+            'img1' =>  $img
 
             
         ]);
         $dompdf->loadHtml($html);
+
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         $dompdf->stream("mypdf.pdf", [
@@ -196,17 +219,19 @@ class FormationController extends AbstractController
 $posts=$repository->findEntities($requestString);
         if(!$posts) {
             $result['posts']['error'] = "Post Not found :( ";
-        } else {
-            $result['posts'] = $this->getRealEntities($posts);
-        }
+        } 
+        
+        // else {
+        //     $result['posts'] = $this->getRealEntities($posts);
+        // }
         return new Response(json_encode($result));
     }
-    public function getRealEntities($posts){
-        foreach ($posts as $post){
-            $realEntities[$post->getIdFormation()] = $post->getNomFormation();
-        }
-        return $realEntities;
-    }
+    // public function getRealEntities($posts){
+    //     foreach ($posts as $post){
+    //         $realEntities[$post->getIdFormation()] = $post;
+    //     }
+    //     return $realEntities;
+    // }
 /**
  * Search action.
  * @Route("/search1/{search}", name="search1")
@@ -233,4 +258,46 @@ public function searchAction1(FormationRepository $repository,Request $request, 
         "html" => $this->renderView("search.ajax.twig", ["results" => $results]),
     ]);
 }
+
+
+
+ 
+/**
+     * @Route("/best/best", name="best", methods={"GET"})
+     */
+    public function best(PaginatorInterface  $paginator,ParticipationRepository $p ,Request $request)
+    {
+       
+       $s=$p->nbPartByForm1();
+       $formations=     $paginator->paginate(
+          $s, // Requête contenant les données à paginer 
+           $request->query->getInt('page', 1), 
+           3 
+       );
+    
+return $this->render('formation/best.html.twig', [
+    'formations' => $formations
+]);
+
+        
+        
+    }
+
+
+    /**
+     * @Route("/", name="app_recherche", methods={"POST"})
+     */
+    public function rechercher(Request $request,FormationRepository $repository)
+    {
+        $form=$this->createForm(SearchForm::class);
+        if( $request->isMethod("POST"))
+        {
+            $nom =$request->get('marque');
+            $formations =$repository->findEntities($nom);
+        }
+
+        return $this->render('formation/index.html.twig', [
+            'formations' => $formations,'form'=>$form->createView()
+        ]);}
+
 }

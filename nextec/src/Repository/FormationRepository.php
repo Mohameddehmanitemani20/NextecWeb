@@ -145,7 +145,7 @@ class FormationRepository extends ServiceEntityRepository
             ->createQuery(
                 "SELECT p
                 FROM APP\Entity\Formation p
-                WHERE p.nom_formation LIKE :str"
+                WHERE p.nomFormation LIKE :str"
             )
             ->setParameter('str', '%'.$str.'%')
             ->getResult();
@@ -167,4 +167,20 @@ class FormationRepository extends ServiceEntityRepository
       
 
     }
+
+
+
+    public function tri()
+    
+    {
+
+
+        return $this->createQueryBuilder('s')
+        ->orderBy('s.dateDebut', 'DESC')
+        ->getQuery()->getResult();
+           
+   
+
+    }
+
 }
