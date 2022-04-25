@@ -4,13 +4,14 @@
 namespace App\Form;
 
 use App\Data\SearchData;
-
+use Doctrine\DBAL\Types\DateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType as TypeDateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType as TypeDateType;
 
 class SearchForm extends AbstractType
 {
@@ -38,15 +39,17 @@ class SearchForm extends AbstractType
     {
     
         $builder
-        ->add('min', TypeDateTimeType::class, [
+        ->add('min', TypeDateType::class, [
             
-            'required' => false,
+            'required' => false,      'placeholder' => [
+                'year' => 'Year', 'month' => 'Month', 'day' => 'Day']
            
         ])
-        ->add('max',TypeDateTimeType::class,  [
+        ->add('max',TypeDateType::class,  [
           
             'required' => false,
-          
+            'placeholder' => [
+                'year' => 'Year', 'month' => 'Month', 'day' => 'Day']
         ])
 
 

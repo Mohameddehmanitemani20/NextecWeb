@@ -6,6 +6,7 @@ use App\Entity\AffectationFormateur;
 use App\Entity\User;
 use App\Form\AffectationFormateurType;
 use App\Repository\AffectationFormateurRepository;
+use App\Repository\ReponseRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,12 +44,13 @@ class AffectationFormateurController extends AbstractController
         //$affectationFormateur->setFormateur( $this->getUser());
        // $affectationFormateur->setFormation($data->get)
         $form->handleRequest($request);
-     
+        //$affectationFormateur->setReponse(1);
+        $img='data:image;base64,'.base64_encode(@file_get_contents('C:\Users\pc\OneDrive\Pictures\logo.jpeg'));
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($affectationFormateur);
             $entityManager->flush();
-            $user =
+            //$user =
             $message = (new \Swift_Message('Nouvelle Affecation'))
             // On attribue l'expéditeur
             ->setFrom('moatezoues123@gmail.com')
@@ -62,14 +64,15 @@ class AffectationFormateurController extends AbstractController
                     'aff' => $affectationFormateur,
                     'fin' => $affectationFormateur->getFormation()->getDateFin()->format( 'd/m/Y'),
                     'debut' => $affectationFormateur->getFormation()->getDateDebut()->format( 'd/m/Y'),
-                   
-        
+                    'img1' =>  $img,
+                    'msg'=>"Consulter Votre compte Vous avez une nouvelle affectation ",
+                    'url'=>"http://127.0.0.1:8000/affectation/formateur/affect/Formateur/"
                 ]),
                 'text/html'
             )
         ;
         $mailer->send($message);
-        $this->addFlash('message', 'Votre message a été transmis, nous vous répondrons dans les meilleurs délais.'); // Permet un message flash de renvoi
+        $this->addFlash('message', 'Votre message a été transmis.'); // Permet un message flash de renvoi
      
             return $this->redirectToRoute('affectation_formateur_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -93,12 +96,14 @@ class AffectationFormateurController extends AbstractController
     /**
      * @Route("/{idAffectation}/edit", name="affectation_formateur_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, AffectationFormateur $affectationFormateur, EntityManagerInterface $entityManager): Response
-    {
+    public function edit(Request $request, AffectationFormateur $affectationFormateur, ReponseRepository $rep,EntityManagerInterface $entityManager): Response
+    { //$r=$rep->find(1);
+       // $affectationFormateur->setReponse($r);
         $form = $this->createForm(AffectationFormateurType::class, $affectationFormateur);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+           
             $entityManager->flush();
 
             return $this->redirectToRoute('affectation_formateur_index', [], Response::HTTP_SEE_OTHER);
@@ -163,4 +168,50 @@ class AffectationFormateurController extends AbstractController
         ->refuser($idAffectation);
        
         return $this->redirectToRoute('affectForm');    }
+          /**
+     * @Route("/", name="app_recherche2", methods={"POST"})
+     */
+    public function rechercher(Request $request,AffectationFormateurRepository $repository)
+    {
+       
+        if( $request->isMethod("POST"))
+        {
+            $nom =$request->get('forma');
+            $aff =$repository->findEntities($nom);
+        }
+
+        return $this->render('affectation_formateur/index.html.twig', [
+            'affectation_formateurs' => $aff
+        ]);}
+
+
+/**
+     * @Route("/affect/Formateur/A", name="affectFormA", methods={"GET"})
+     */
+    public function affectA(AffectationFormateurRepository $a,UserRepository $u): Response
+    {$username="formateur1";
+       //  $user=new User() ;
+         //$user=$u->findbyusername($username);
+        // $x=$user->getId();
+        $affectationFormateurs = $a->FormA($username);
+
+        return $this->render('affectation_formateur/affectFormA.html.twig', [
+            'affectation_formateurs' => $affectationFormateurs,
+        ]);
+    }
+/**
+     * @Route("/affect/Formateur/R", name="affectFormR", methods={"GET"})
+     */
+    public function affectNC(AffectationFormateurRepository $a,UserRepository $u): Response
+    {$username="formateur1";
+       //  $user=new User() ;
+         //$user=$u->findbyusername($username);
+        // $x=$user->getId();
+        $affectationFormateurs = $a->FormR($username);
+
+        return $this->render('affectation_formateur/affectFormR.html.twig', [
+            'affectation_formateurs' => $affectationFormateurs,
+        ]);
+    }
+
 }

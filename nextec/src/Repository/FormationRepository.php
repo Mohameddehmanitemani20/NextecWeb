@@ -52,18 +52,18 @@ class FormationRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function FormationByNom($val)
+    // public function FormationByNom($val)
     
-    {
-        $query= $this-> getEntityManager()->createQuery("SELECT s  FROM APP\Entity\Formation s wher s.nomFormation like ':v'
+    // {
+    //     $query= $this-> getEntityManager()->createQuery("SELECT s  FROM APP\Entity\Formation s wher s.nomFormation like ':v'
        
-        ")
+    //     ")
 
 
-       ->setParameter('v', $val);
-       return  $query->getResult();
+    //    ->setParameter('v', $val);
+    //    return  $query->getResult();
     
-    }
+    // }
     public function FormationByFormateur($val)
     
     {
@@ -167,7 +167,32 @@ class FormationRepository extends ServiceEntityRepository
       
 
     }
+    public function listEN()
+    
+    {
 
+
+    
+ $entityManager=$this->getEntityManager();
+
+ return $entityManager
+ ->createQuery("SELECT s  FROM APP\Entity\Formation s where s.dispositif like :str
+  
+ 
+  ")   ->setParameter('str', 'En_Ligne')->getResult();
+    }
+    public function listPR()
+    
+    {
+        $entityManager=$this->getEntityManager();
+
+    
+        return $entityManager
+        ->createQuery("SELECT s  FROM APP\Entity\Formation s where s.dispositif not like :str
+         
+        
+         ")   ->setParameter('str', 'En_Ligne')->getResult();
+    }
 
 
     public function tri()
@@ -177,6 +202,18 @@ class FormationRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('s')
         ->orderBy('s.dateDebut', 'DESC')
+        ->getQuery()->getResult();
+           
+   
+
+    }
+    public function triN()
+    
+    {
+
+
+        return $this->createQueryBuilder('s')
+        ->orderBy('s.nomFormation', 'DESC')
         ->getQuery()->getResult();
            
    

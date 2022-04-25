@@ -89,10 +89,13 @@
                                     <!-- logo end -->
                                 </div>
                                 <div class="col-md-9 col-sm-9">
-                                    <div class="header-right-link">
+                                     <div class="header-right-link">
                                         <!-- search option end -->
-                                        <a class="s-menu" href="login.html">Login</a>
-                                    </div>
+                                        {# <a class="s-menu" href="login.html">Login</a> #}
+                                         <img src="{{ asset('assets/images/logo.png')}}" class="logo-icon" alt="logo icon">
+                                    </div> 
+                                     
+      
                                     <!-- mainmenu start -->
                                     <nav class="navbar navbar-default">
                                         <div class="collapse navbar-collapse" id="navbar-example">
@@ -100,20 +103,20 @@
                                                 <ul class="nav navbar-nav navbar-right">
                                                     <li><a class="pages" href="{{ path('affectForm') }}">Mes Affecations</a>
                                                         <ul class="sub-menu">
-                                                            <li><a href="index-2.html">Accepté</a></li>
-                                                            <li><a href="index-3.html">Pas sencore</a></li>
+                                                            <li><a href="{{ path('affectFormA') }}">Accepté</a></li>
+                                                            <li><a href="{{ path('affectFormR') }}">Pas encore consulté</a></li>
                                                         </ul>
                                                     </li>
                                                    
                                                    
                                                     <li><a class="pages" href="{{ path('list1') }}">Formations</a>
                                                         <ul class="sub-menu">
-                                                            <li><a href="blog.html">En ligne</a></li>
-                                                            <li><a href="blog-sidebar.html">Présentiel</a></li>
+                                                            <li><a href="{{ path('enligne') }}">En ligne</a></li>
+                                                            <li><a href="{{ path('pr') }}">Présentiel</a></li>
                                                         
                                                         </ul>
                                                     </li>
-                                                    <li><a href="contact.html">contacts</a></li>
+                                                    <li><a href="{{ path('best') }}">Liste des favoris</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -181,7 +184,7 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <!-- Start Slider content -->
                                 <div class="slide-content text-center">
-                                    <h2 class="title2">Best secure investment plan</h2>
+                                    <h2 class="title2">Best Experience With NEXTEC</h2>
                                     <div class="layer-1-3">
                                         <a href="#" class="ready-btn left-btn" >Get started</a>
                                         <div class="video-content">

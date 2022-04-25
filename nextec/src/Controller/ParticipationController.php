@@ -6,6 +6,7 @@ use App\Entity\Formation;
 use App\Entity\Participation;
 use App\Entity\User;
 use App\Form\ParticipationType;
+use App\Form\SearchForm;
 use App\Repository\FormationRepository;
 use App\Repository\ParticipationRepository;
 use App\Repository\UserRepository;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
+use Twilio\Rest\Client;
 
 /**
  * @Route("/participation")
@@ -140,6 +142,10 @@ class ParticipationController extends AbstractController
    
   /**
      * @Route("/participer/{id}/{idU}", name="participer1", methods={"GET","POST"})
+     * @param Request $request
+     * @param Client $twilioClient
+     * @return Response
+     * @throws \Twilio\Exceptions\TwilioException
      */
     public function participer($id,$idU, EntityManagerInterface $entityManager): Response
     {  
@@ -154,26 +160,48 @@ class ParticipationController extends AbstractController
         $participation->setFormation($f);
         $participation->setIdParticipant($p);
         $participation->setDateParticipation(new DateTime());
-       
+       $msg= "Mr/MMe".$p->getUsername()."Vous êtes participé à" .$f->getNomFormation();
       if( $this->valid1($participation)==false)
        { $em = $this->getDoctrine()->getManager();
         $em->persist($participation);
         $em->flush();
-        $message = $this->twilio->messages->create(
-            $p->getNumTel(), // Send text to this number
+      /*    $this->twilio->messages->create(
+            "+21624030100", // Send text to this number
             array(
               'from' => '+14439032479', // My Twilio phone number
               'body' => 'Hello from Awesome Massages. A reminder that your massage appointment is for today at ' 
             )
           );
-   
-         
+  
+          $twilioClient->messages->create("", [
+            "body" =>  "participé",
+            "from" => $p->getNumTel()
+        ]);
     
 
        $p->messages->create("", [
             "body" => "participé",
             "from" => $p->getNumTel()
-        ]);
+        ]);*/
+
+        $account_sid = 'AC4149cf8d417a217d698b9d9cb3355dae';
+        $auth_token = 'eea540be9dee7ac8bdb4edb023803187';
+        // In production, these should be environment variables. E.g.:
+        // $auth_token = $_ENV["TWILIO_AUTH_TOKEN"]
+        
+        // A Twilio number you own with SMS capabilities
+        $twilio_number = "+19403146091";
+        
+        $client = new Client($account_sid, $auth_token);
+       /* $client->messages->create(
+            // Where to send a text message (your cell phone?)
+            '+21629010200',
+            array(
+                'from' => '+19403146091',
+                'body' => $msg
+            )
+        );
+*/
       
     }
         return $this->redirectToRoute('list1'); 
@@ -201,5 +229,48 @@ if(($p->getIdParticipant()==$part->getIdParticipant()) && ( $p->getFormation()==
             return $x;
 
          }
+     /**
+     * @Route("/list1/list", name="app_recherche3", methods={"POST"})
+     */
+    public function rechercher(Request $request,FormationRepository $repository)
+    {
+      
+        if( $request->isMethod("POST"))
+        {
+            $nom =$request->get('forma');
+            $formations =$repository->findEntities($nom);
+        }
 
+        return $this->render('participation/listFormation.html.twig', [
+            'list' => $formations
+        ]);}
+          /**
+     * @Route("/list1/EnLigne", name="enligne", methods={"GET"})
+     */
+    public function showFormationsOnLine(FormationRepository $entityManager): Response
+    {
+     
+        $list= $entityManager
+       
+        ->listEN();
+
+        return $this->render('participation/listFormationEN.html.twig', [
+            "list" => $list,
+        ]);
+    }
+
+ /**
+     * @Route("/list1/PR", name="pr", methods={"GET"})
+     */
+    public function showFormationsPR(FormationRepository $entityManager): Response
+    {
+     
+        $list= $entityManager
+       
+        ->listPR();
+
+        return $this->render('participation/listFormationPR.html.twig', [
+            "list" => $list,
+        ]);
+    }
 }

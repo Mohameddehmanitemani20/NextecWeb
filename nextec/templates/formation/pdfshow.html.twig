@@ -1,3 +1,4 @@
+
 <html>
 	<head>
 
@@ -93,39 +94,99 @@
 			.invoice-box.rtl table tr td:nth-child(2) {
 				text-align: left;
 			}
+			table, th, td {
+  border: 1px solid;
+}
+			h1 { color: #111; font-family: 'Helvetica Neue', sans-serif;  font-weight: bold; letter-spacing: -1px; line-height: 1; text-align: center; }
 		</style>
+		
 	</head>
 
 	<body>
 		<div class="invoice-box">
 			<table cellpadding="0" cellspacing="0">
-				<tr class="top">
-					<td colspan="2">
-					
-					</td>
-				</tr>
+			*
 
 				<tr class="information">
 					<td colspan="2">
 						<table>
 							<tr>
+								<td >
+								<img src={{img1}}  width="100" height="100">
+
+						</td> 
 								<td>
-									IDFormation: {{Formation.idFormation}}<br />
-									Nom: {{ Formation.nomFormation}}<br />
-									Date: {{ Programme}}  -  {{Programme}}<br />
+									{# IDFormation: {{Formation.idFormation}}<br /> #}
+									Nom: {{ Formation.nomFormation }}<br />
+									Date Début-Fin :  {{ Formation.dateDebut ? Formation.dateDebut|date('Y-m-d') : '' }}  -  {{Formation.dateFin ? Formation.dateFin|date('Y-m-d') : '' }}<br />
+									Programme:{{Programme}}
 									
 								</td>
-
+   
+	
 							
 						</table>
 					</td>
 				</tr>
-
+		</table>
 			
+ <h1 style="background-color:Tomato;">Les participants à cette formation</h1>
+		 <table class="table">
+        <thead>
+            <tr>
+			  <td>Username</td>
+                <td>DateParticipation</td>
+				<td>Email</td>
+                 </tr>
+        </thead>
+        <tbody>
+        {% for participation in part %}
+           {% if participation.formation.idFormation == id %}
 
-			</table>
-		
+            <tr>
+                {# <td>{{ participation.idParticipation }}</td> #}
+				  <td>{{ participation.idParticipant.username }}</td>
+                <td>{{ participation.dateParticipation ? participation.dateParticipation|date('Y-m-d') : '' }}</td>
+                 	  <td>{{ participation.idParticipant.email }}</td>
+                   
+			 
+            </tr>
+			 {% endif %}
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+ <h1 style="background-color:DodgerBlue;">Les Formateurs affectées à cette formation</h1>
+<table class="table">
+        <thead>
+            <tr>
+			  <td>Username</td>
+                
+				<td>Email</td>
+                 </tr>
+        </thead>
+        <tbody>
+        {% for a in affect %}
+           {% if a.formation.idFormation == id %}
 
+            <tr>
+                {# <td>{{ participation.idParticipation }}</td> #}
+				  <td>{{ a.formateur.username }}</td>
+                
+                   	  <td>{{ a.formateur.email }}</td>
+			 
+            </tr>
+			 {% endif %}
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 	</body>
 
 </html>

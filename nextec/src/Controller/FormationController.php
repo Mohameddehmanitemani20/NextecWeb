@@ -8,6 +8,7 @@ use App\Entity\Search;
 use App\Form\FormationType;
 use App\Form\SearchForm;
 use App\Form\TriForm;
+use App\Repository\AffectationFormateurRepository;
 use App\Repository\FormationRepository;
 use App\Repository\ParticipationRepository;
 use ContainerF8itYSJ\PaginatorInterface_82dac15;
@@ -32,7 +33,7 @@ class FormationController extends AbstractController
     public function index(FormationRepository $repository,PaginatorInterface  $paginator,EntityManagerInterface $entityManager,Request $request): Response
     {
       
-        
+       
         $form=$this->createForm(SearchForm::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
@@ -94,13 +95,28 @@ class FormationController extends AbstractController
         ]);
         }
  /**
-     * @Route("/trier", name="trierD")
+     * @Route("/trierD", name="trierD")
       */
-      public function trierF(FormationRepository $repository, Request $request)
+      public function trierF(FormationRepository $repository, Request $request,EntityManagerInterface $entityManager)
       {
         $form=$this->createForm(SearchForm::class);
-      
+       
         $formations=$repository->tri();
+        $this->redirectToRoute('formation_index'); 
+        return $this->render('formation/index.html.twig', [
+            'formations' => $formations,'form'=>$form->createView()
+        ]);
+        }
+
+
+         /**
+     * @Route("/trierN", name="trierN", methods={"GET", "POST"})
+      */
+      public function trierN(FormationRepository $repository, Request $request)
+      {
+        $form=$this->createForm(SearchForm::class);
+       
+        $formations=$repository->triN();
          
         return $this->render('formation/index.html.twig', [
             'formations' => $formations,'form'=>$form->createView()
@@ -139,16 +155,16 @@ class FormationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{nomFormation}", name="formation_showbynom")
-     */
-    public function showByNom(FormationRepository  $em, $nomFormation)
-    {
-        $f=$em->FormationByNom($nomFormation);
-        return $this->render('formation/showbynom.html.twig', [
-            'formation' => $f,
-        ]);
-    }
+    // /**
+    //  * @Route("/{nomFormation}", name="formation_showbynom")
+    //  */
+    // public function showByNom(FormationRepository  $em, $nomFormation)
+    // {
+    //     $f=$em->FormationByNom($nomFormation);
+    //     return $this->render('formation/showbynom.html.twig', [
+    //         'formation' => $f,
+    //     ]);
+    // }
     /**
      * @Route("/{idFormation}/edit", name="formation_edit", methods={"GET", "POST"})
      */
@@ -185,10 +201,23 @@ class FormationController extends AbstractController
 /**
      * @Route("/pdf/{id}", name="Formation_showpdf", methods={"GET"})
      */
-    public function pdfshow(Formation $f)
+    public function pdfshow($id,Formation $f,ParticipationRepository $rep,FormationRepository $repository,AffectationFormateurRepository $af)
     {  $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
         $dompdf = new Dompdf($pdfOptions);
+        $participants = $rep
+        ->findAll();
+        $affectations=$af->findAll();
+        $k=[];
+        $f1=$repository->find($id);
+        foreach($participants as $p)
+        {if($p->getFormation()->getNomFormation()==$f1->getNomFormation())
+{array_push($k,$p->getIdParticipant());
+
+
+
+}}
+
        $img='data:image;base64,'.base64_encode(@file_get_contents('C:\Users\pc\OneDrive\Pictures\logo.jpeg'));
      
         $html=$this->render('formation/pdfshow.html.twig', [
@@ -196,8 +225,10 @@ class FormationController extends AbstractController
             'date Début' => $f->getDateDebut()->format( 'd/m/Y'),
             'date Fin' => $f->getDateFin()->format( 'd/m/Y'),
             'Programme' => $f->getProgramme(),
-            'img1' =>  $img
-
+            'img1' =>  $img,
+             'id'=> $f->getIdFormation(),
+             'part'=> $participants ,
+             'affect'=> $affectations
             
         ]);
         $dompdf->loadHtml($html);
@@ -285,7 +316,7 @@ return $this->render('formation/best.html.twig', [
 
 
     /**
-     * @Route("/", name="app_recherche", methods={"POST"})
+     * @Route("/", name="app_recherche", methods={"GET","POST"})
      */
     public function rechercher(Request $request,FormationRepository $repository)
     {

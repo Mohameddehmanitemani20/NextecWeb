@@ -32,13 +32,15 @@ class AffectationFormateurType extends AbstractType
             
 
 
-            'choice_label'=>'email',
+            'choice_label'=>'username',
              ])
             ->add('reponse',EntityType::class,[
                 'class'=> Reponse::class,
-                'choice_label'=>'reponse',
+                'choice_label'=>'reponse'
+            
+                ]
                 
-                ])
+                )
      
         ;
     }

@@ -81,7 +81,7 @@ class Formation
         return $this->nomFormation;
     }
 
-    public function setNomFormation(string $nomFormation): self
+    public function setNomFormation(?string $nomFormation): self
     {
         $this->nomFormation = $nomFormation;
 

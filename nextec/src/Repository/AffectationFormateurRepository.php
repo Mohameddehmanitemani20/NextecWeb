@@ -143,4 +143,58 @@ class AffectationFormateurRepository extends ServiceEntityRepository
    
 
     }
+
+    public function findEntities($str){
+        return $this->getEntityManager()
+            ->createQuery(
+                "SELECT p
+                FROM APP\Entity\AffectationFormateur p,APP\Entity\User u
+                WHERE  (u.username LIKE :str or  u.email LIKE :str  or u.numTel LIKE :str) and p.formateur=u.id "
+            )
+            ->setParameter('str', '%'.$str.'%')
+            ->getResult();
+    }
+
+    public function FormA($val)
+    
+    {
+ 
+
+    
+ $entityManager=$this->getEntityManager();
+
+ $query=$entityManager
+ ->createQuery("SELECT a FROM 
+  APP\Entity\AffectationFormateur a,APP\Entity\User u where  a.formateur=u.id and u.username =:v and a.reponse=2 
+  ")
+
+
+ ->setParameter('v', $val);
+ return $query->getResult();
+
+           
+    }
+
+ public function FormR($val)
+    
+    {
+ 
+
+    
+ $entityManager=$this->getEntityManager();
+
+ $query=$entityManager
+ ->createQuery("SELECT a FROM 
+  APP\Entity\AffectationFormateur a,APP\Entity\User u where  a.formateur=u.id and u.username =:v and a.reponse=1
+  ")
+
+
+ ->setParameter('v', $val);
+ return $query->getResult();
+
+           
+   
+
+    }
+    
 }
