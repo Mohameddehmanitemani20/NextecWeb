@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Equipe;
 use App\Form\EquipeType;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,11 +26,13 @@ class EquipeController extends AbstractController
         $equipes = $entityManager
             ->getRepository(Equipe::class)
             ->findAll();
+            
 
         return $this->render('equipe/index.html.twig', [
             'equipes' => $equipes,
         ]);
     }
+
 
     /**
      * @Route("/new", name="app_equipe_new", methods={"GET", "POST"})
@@ -50,7 +55,18 @@ class EquipeController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
+    /**
+     * @Route("/listEquipe/search/{searchString}", name="searchEnt")
+     * @return Response|JsonResponse          Response instance
+     */
+    public function searchEnt($searchString): JsonResponse
+    {
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $repository = $this->getDoctrine()->getRepository(Equipe::class);
+        $users = $repository->findByNomEquipe($searchString);
+        $data = $serializer->normalize($users);
+        return new JsonResponse($data);
+    }
     /**
      * @Route("/{idEquipe}", name="app_equipe_show", methods={"GET"})
      */
@@ -86,7 +102,7 @@ class EquipeController extends AbstractController
      */
     public function delete(Request $request, Equipe $equipe, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$equipe->getIdEquipe(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $equipe->getIdEquipe(), $request->request->get('_token'))) {
             $entityManager->remove($equipe);
             $entityManager->flush();
         }

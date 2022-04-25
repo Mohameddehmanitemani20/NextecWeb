@@ -73,4 +73,12 @@ class AvisRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findCount($name){
+        $entityManager=$this->getEntityManager();
+        $query=$entityManager
+            ->createQuery("SELECT Count(s.idInvitation) as idInvitation FROM APP\Entity\Invitation s JOIN s.Equipe c WHERE c.idEquipe=:name ")
+            ->setParameter('name',$name);
+            return $query->getSingleScalarResult();
+    }
+
 }

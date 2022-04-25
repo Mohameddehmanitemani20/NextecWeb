@@ -24,8 +24,8 @@
                  <td>{{ invitation.idJoueur.username }}</td>
  <td>{{ invitation.idEq.nomEquipe }}</td>
                 <td>
-                    <a href="{{ path('app_invitation_show', {'idInvitation': invitation.idInvitation}) }}">show</a>
-                    <a href="{{ path('app_invitation_edit', {'idInvitation': invitation.idInvitation}) }}">edit</a>
+                    <a class="btn btn-success" href="{{ path('app_invitation_show', {'idInvitation': invitation.idInvitation}) }}">show</a>
+                    <a class="btn btn-success" href="{{ path('app_invitation_edit', {'idInvitation': invitation.idInvitation}) }}">edit</a>
                 </td>
                 
             </tr>
@@ -37,5 +37,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_invitation_new') }}">Create new</a>
+    <a class="btn btn-primary" href="{{ path('app_invitation_new') }}">Create new</a>
 {% endblock %}
