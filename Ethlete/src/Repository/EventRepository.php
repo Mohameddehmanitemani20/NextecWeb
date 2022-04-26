@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 
@@ -47,6 +48,15 @@ class EventRepository extends ServiceEntityRepository
         }
     }
 
+  //  /**
+   //  * @return Query
+    // */
+   /* public function findAllVisibleQuery(): Query
+    {
+      return  $this->findVisibleQuery()->getQuery();
+    }
+
+    */
     // /**
     //  * @return Evenement[] Returns an array of Evenement objects
     //  */

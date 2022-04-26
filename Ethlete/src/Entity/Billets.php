@@ -10,10 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="billets", indexes={@ORM\Index(name="fk_billet_evenement", columns={"id_event"})})
  * @ORM\Entity
  */
-
-/**
- * @ORM\Entity(repositoryClass="App\Repository\BilletRepository")
- */
 class Billets
 {
     /**
@@ -55,59 +51,6 @@ class Billets
      * })
      */
     private $idEvent;
-
-    public function getIdBillet(): ?int
-    {
-        return $this->idBillet;
-    }
-
-    public function getNbrBillet(): ?int
-    {
-        return $this->nbrBillet;
-    }
-
-    public function setNbrBillet(int $nbrBillet): self
-    {
-        $this->nbrBillet = $nbrBillet;
-
-        return $this;
-    }
-
-    public function getPrix(): ?float
-    {
-        return $this->prix;
-    }
-
-    public function setPrix(float $prix): self
-    {
-        $this->prix = $prix;
-
-        return $this;
-    }
-
-    public function getDateAchat(): ?\DateTimeInterface
-    {
-        return $this->dateAchat;
-    }
-
-    public function setDateAchat(\DateTimeInterface $dateAchat): self
-    {
-        $this->dateAchat = $dateAchat;
-
-        return $this;
-    }
-
-    public function getIdEvent(): ?Evenement
-    {
-        return $this->idEvent;
-    }
-
-    public function setIdEvent(?Evenement $idEvent): self
-    {
-        $this->idEvent = $idEvent;
-
-        return $this;
-    }
 
 
 }

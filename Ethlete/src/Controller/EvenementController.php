@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Evenement;
-use App\Form\EvenementType;
+use App\Form\Evenement1Type;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 /**
  * @Route("/evenement")
@@ -19,16 +21,40 @@ class EvenementController extends AbstractController
     /**
      * @Route("/", name="app_evenement_index", methods={"GET"})
      */
-    public function index(EntityManagerInterface $entityManager): Response
+
+    public function index(PaginatorInterface $paginator, Request $request): Response
+    {   // Méthode findBy qui permet de récupérer les données avec des critères de filtre et de tri
+        $donnees = $this->getDoctrine()->getRepository(Evenement::class)->findAll();
+
+        $evenements = $paginator->paginate(
+            $donnees, // Requête contenant les données à paginer (ici nos events)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6// Nombre de résultats par page
+        );
+
+        return $this->render('evenement/index.html.twig', [
+            'evenements' => $evenements,
+        ]);
+
+
+
+
+    }
+    /**
+     * @Route("/eventFront", name="event_showf")
+     */
+
+    public function afficherEvent ( EntityManagerInterface $entityManager)
     {
         $evenements = $entityManager
             ->getRepository(Evenement::class)
             ->findAll();
 
-        return $this->render('evenement/index.html.twig', [
-            'evenements' => $evenements,
-        ]);
+        return $this->render('evenement/showFront.html.twig', ['evenements' => $evenements,] );
+
+
     }
+
 
     /**
      * @Route("/new", name="app_evenement_new", methods={"GET", "POST"})
@@ -36,10 +62,21 @@ class EvenementController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $evenement = new Evenement();
-        $form = $this->createForm(EvenementType::class, $evenement);
+        $form = $this->createForm(Evenement1Type::class, $evenement);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('imagee')->getData();
+            $Filename = md5(uniqid()).'.'.$file->guessExtension();
+            try {
+                $file->move(
+                    $this->getParameter('images1'),
+                    $Filename
+                );
+            } catch (FileException $e) {
+
+            }
+            $evenement->setImageE($Filename);
             $entityManager->persist($evenement);
             $entityManager->flush();
 
@@ -67,13 +104,14 @@ class EvenementController extends AbstractController
      */
     public function edit(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(EvenementType::class, $evenement);
+        $form = $this->createForm(Evenement1Type::class, $evenement);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
             return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
+
         }
 
         return $this->render('evenement/edit.html.twig', [

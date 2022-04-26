@@ -15,7 +15,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 
 class Evenement
+{  public function __toString()
 {
+    return $this->getNomEvent();
+}
+
     /**
      * @var int
      *
@@ -24,6 +28,14 @@ class Evenement
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idEvent;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="imageE", type="string", length=500, nullable=false)
+     */
+    private $imagee;
+
 
     /**
      * @var string
@@ -69,7 +81,6 @@ class Evenement
     /**
      * @var float
      * @Assert\Positive
-
      * @ORM\Column(name="prixU", type="float", precision=10, scale=0, nullable=false)
      */
     private $prixu;
@@ -107,6 +118,19 @@ class Evenement
     public function getIdEvent(): ?int
     {
         return $this->idEvent;
+    }
+
+
+    public function getImagee()
+    {
+        return $this->imagee;
+    }
+
+    public function setImagee( $imagee)
+    {
+        $this->imagee = $imagee;
+
+        return $this;
     }
 
     public function getNomEvent(): ?string

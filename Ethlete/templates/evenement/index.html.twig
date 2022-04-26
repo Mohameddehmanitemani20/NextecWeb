@@ -1,20 +1,21 @@
 {% extends 'back.html.twig' %}
 
-{% block title %}Liste des Evénements{% endblock %}
+{% block title %}Evenement index{% endblock %}
 
 {% block body %}
-    <h1>Liste des Evénements</h1>
+    <h1>Evenement index</h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>IdEvent</th>
-                <th>Nom Event</th>
-                <th>Date de Debut</th>
-                <th>Date de Fin</th>
-                <th>Type de l'Event</th>
+                <th>Imagee</th>
+                <th>NomEvent</th>
+                <th>DateDebut</th>
+                <th>DateFin</th>
+                <th>Typee</th>
                 <th>Lieu</th>
-                <th>Prix</th>
+                <th>Prixu</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -22,6 +23,7 @@
         {% for evenement in evenements %}
             <tr>
                 <td>{{ evenement.idEvent }}</td>
+                <td><img src="{{asset('/uploads/' ~ evenement.imagee )}}" alt=""style="width: 200px;height:200px"></td>
                 <td>{{ evenement.nomEvent }}</td>
                 <td>{{ evenement.dateDebut ? evenement.dateDebut|date('Y-m-d') : '' }}</td>
                 <td>{{ evenement.dateFin ? evenement.dateFin|date('Y-m-d') : '' }}</td>
@@ -35,11 +37,15 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="9">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(evenements) }}
+    </div>
 
     <a href="{{ path('app_evenement_new') }}">Create new</a>
 {% endblock %}

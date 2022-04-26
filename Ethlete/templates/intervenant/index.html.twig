@@ -5,41 +5,32 @@
 {% block body %}
     <h1> Liste des Intervenants </h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id Intervenant</th>
-                <th>Image Intervenant</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Email</th>
-                <th>Telephone</th>
-                <th>Type de l'intervenant</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for intervenant in intervenants %}
-            <tr>
-                <td>{{ intervenant.idInter }}</td>
-                <td>{{ intervenant.imageIn }}</td>
-                <td>{{ intervenant.nom }}</td>
-                <td>{{ intervenant.prenom }}</td>
-                <td>{{ intervenant.email }}</td>
-                <td>{{ intervenant.telephone }}</td>
-                <td>{{ intervenant.idTypeint }}</td>
-                <td>
-                    <a href="{{ path('app_intervenant_show', {'idInter': intervenant.idInter}) }}">Afficher</a>
-                    <a href="{{ path('app_intervenant_edit', {'idInter': intervenant.idInter}) }}">Modifier</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<div class="cards">
+    {% for intervenant in intervenants %}
+
+        <div class="card">
+            <img class="card-img-top" src="{{asset('/uploads/' ~ intervenant.imageIn )}}" alt="Card image" >
+            <div class="card-body text-center">
+
+                <h4 class="card-title">{{ intervenant.nom }}</h4>
+                <h4>{{ intervenant.prenom }}</h4>
+                <h4>{{ intervenant.email }}</h4>
+                <h4>{{ intervenant.telephone }}</h4>
+                <h4>{{ intervenant.idTypeint }}</h4>
+
+
+                <a href="{{ path('app_intervenant_show', {'idInter': intervenant.idInter}) }}">Afficher</a>
+                <a href="{{ path('app_intervenant_edit', {'idInter': intervenant.idInter}) }}">Modifier</a>
+            </div>
+        </div>
+
+    {% else %}
+        <tr>
+            <td colspan="4">no records found</td>
+        </tr>
+    {% endfor %}
+
+
 
     <a href="{{ path('app_intervenant_new') }}">Ajouter</a>
 {% endblock %}

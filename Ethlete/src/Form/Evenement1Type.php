@@ -2,21 +2,21 @@
 
 namespace App\Form;
 
-use App\Entity\Intervenant;
+use App\Entity\Evenement;
+use App\Entity\Formation;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-
-class IntervenantType extends AbstractType
+class Evenement1Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('imageIn',FileType::class, [
+            ->add('imagee',FileType::class, [
                 'label' => 'Image Event',
 
                 // unmapped means that this field is not associated to any entity property
@@ -30,7 +30,7 @@ class IntervenantType extends AbstractType
                 // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new File([
-                        'maxSize' => '5000k',
+                        'maxSize' => '2000k',
                         'mimeTypes' => [
                             'image/jpg',
                             'image/jpeg',
@@ -39,24 +39,32 @@ class IntervenantType extends AbstractType
                     ])
                 ],
             ])
-            ->add('nom')
-            ->add('prenom')
-            ->add('email')
-            ->add('telephone')
-            ->add('idTypeint',ChoiceType::class, [
+            ->add('nomEvent')
+            ->add('dateDebut')
+            ->add('dateFin')
+            ->add('typee',ChoiceType::class, [
                 'choices'  => [
-                    'Invité' => null,
-                    'Sponsor' => true,
-                    'Organisation' => false,
+                    'Compétition' => true,
+                    'Formation' => false,
                 ],
-            ])
+
+
+            ]
+            )
+
+
+            ->add('lieu')
+            ->add('prixu')
+            ->add('idFormation')
+            ->add('idInter')
+            ->add('idCompet')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Intervenant::class,
+            'data_class' => Evenement::class,
         ]);
     }
 }

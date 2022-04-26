@@ -27,6 +27,7 @@
     <link href="{{ asset('assets/css/sidebar-menu.css')}}" rel="stylesheet"/>
     <!-- Custom Style-->
     <link href="{{ asset('assets/css/app-style.css')}}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/card.css')}}" rel="stylesheet"/>
 
 </head>
 
@@ -46,14 +47,15 @@
         <ul class="sidebar-menu do-nicescrol">
             <li class="sidebar-header">MAIN NAVIGATION</li>
             <li>
-                <a href="">
-                    <i class="zmdi zmdi-view-dashboard"  ></i> <span>Gestion des Intervenants</span>
+                <a href=""{{ path('event') }}"">
+                <a href="{{ path('event') }}" class="btn btn-primary btn-lg square" role="button">Gestion Evenements</a>
+                <span></span>
                 </a>
             </li>
-
             <li>
-                <a href="">
-                    <i class="zmdi zmdi-invert-colors" ></i> <span>Gestion des Evénements</span>
+                <a href=""{{ path('inter') }}"">
+                <a href="{{ path('inter') }}" class="btn btn-primary btn-lg square" role="button">Gestion intervenants</a>
+                <span></span>
                 </a>
             </li>
 
@@ -166,6 +168,7 @@
                     </ul>
                 </li>
             </ul>
+            <img src="logo/moon.png" id="icon">
         </nav>
     </header>
     <!--End topbar header-->

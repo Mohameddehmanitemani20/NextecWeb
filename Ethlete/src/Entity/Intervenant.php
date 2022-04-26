@@ -48,7 +48,6 @@ class Intervenant
      * @var string
      *
      *  @Assert\NotBlank(message=" Le champ du nom doit etre non vide")
-
      * @ORM\Column(name="nom", type="string", length=30, nullable=false)
      */
     private $nom;

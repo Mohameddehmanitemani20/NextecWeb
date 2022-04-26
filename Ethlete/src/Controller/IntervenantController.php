@@ -44,7 +44,7 @@ class IntervenantController extends AbstractController
             $Filename = md5(uniqid()).'.'.$file->guessExtension();
             try {
                 $file->move(
-                    $this->getParameter('image_In'),
+                    $this->getParameter('images'),
                     $Filename
                 );
             } catch (FileException $e) {

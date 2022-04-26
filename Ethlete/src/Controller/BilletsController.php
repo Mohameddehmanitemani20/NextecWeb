@@ -2,95 +2,110 @@
 
 namespace App\Controller;
 
-use App\Entity\Billets;
-use App\Form\BilletsType;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Evenement;
+use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/billets")
  */
-class BilletsController extends AbstractController
-{
+class BilletsController extends AbstractController{
     /**
-     * @Route("/", name="app_billets_index", methods={"GET"})
+     *  @Route("/", name="app_billets_index", methods={"GET"})
      */
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(SessionInterface $session, EventRepository $EventRepository)
     {
-        $billets = $entityManager
-            ->getRepository(Billets::class)
-            ->findAll();
+        $panier = $session->get("panier", []);
 
-        return $this->render('billets/index.html.twig', [
-            'billets' => $billets,
-        ]);
-    }
+        // On "fabrique" les données
+        $dataPanier = [];
+        $prix = 0;
 
-    /**
-     * @Route("/new", name="app_billets_new", methods={"GET", "POST"})
-     */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $billet = new Billets();
-        $form = $this->createForm(BilletsType::class, $billet);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($billet);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_billets_index', [], Response::HTTP_SEE_OTHER);
+        foreach($panier as $id => $nbr_billet){
+            $evenement = $EventRepository->find($id);
+            $dataPanier[] = [
+                "evenement" => $evenement,
+                "nbrBillet" => $nbr_billet
+            ];
+            $prix += $evenement->getPrixu() * $nbr_billet;
         }
 
-        return $this->render('billets/new.html.twig', [
-            'billet' => $billet,
-            'form' => $form->createView(),
-        ]);
+        return $this->render('billets/index.html.twig', compact("dataPanier", "prix"));
     }
 
     /**
-     * @Route("/{idBillet}", name="app_billets_show", methods={"GET"})
+     * @Route("/add/{id}", name="add")
      */
-    public function show(Billets $billet): Response
+    public function add(Evenement $evenement, SessionInterface $session)
     {
-        return $this->render('billets/show.html.twig', [
-            'billet' => $billet,
-        ]);
-    }
+        // On récupère le panier actuel
+        $panier = $session->get("panier", []);
+        $id = $evenement->getIdEvent();
 
-    /**
-     * @Route("/{idBillet}/edit", name="app_billets_edit", methods={"GET", "POST"})
-     */
-    public function edit(Request $request, Billets $billet, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(BilletsType::class, $billet);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_billets_index', [], Response::HTTP_SEE_OTHER);
+        if(!empty($panier[$id])){
+            $panier[$id]++;
+        }else{
+            $panier[$id] = 1;
         }
 
-        return $this->render('billets/edit.html.twig', [
-            'billet' => $billet,
-            'form' => $form->createView(),
-        ]);
+        // On sauvegarde dans la session
+        $session->set("panier", $panier);
+
+        return $this->redirectToRoute("app_billets_index");
     }
 
     /**
-     * @Route("/{idBillet}", name="app_billets_delete", methods={"POST"})
+     * @Route("/remove/{id}", name="remove")
      */
-    public function delete(Request $request, Billets $billet, EntityManagerInterface $entityManager): Response
+    public function remove(Evenement $evenement, SessionInterface $session)
     {
-        if ($this->isCsrfTokenValid('delete'.$billet->getIdBillet(), $request->request->get('_token'))) {
-            $entityManager->remove($billet);
-            $entityManager->flush();
+        // On récupère le panier actuel
+        $panier = $session->get("panier", []);
+        $id = $evenement->getIdEvent();
+
+        if(!empty($panier[$id])){
+            if($panier[$id] > 1){
+                $panier[$id]--;
+            }else{
+                unset($panier[$id]);
+            }
         }
 
-        return $this->redirectToRoute('app_billets_index', [], Response::HTTP_SEE_OTHER);
+        // On sauvegarde dans la session
+        $session->set("panier", $panier);
+
+        return $this->redirectToRoute("app_billets_index");
     }
+
+    /**
+     * @Route("/delete/{id}", name="delete")
+     */
+    public function delete(Evenement $evenement, SessionInterface $session)
+    {
+        // On récupère le panier actuel
+        $panier = $session->get("panier", []);
+        $id = $evenement->getId();
+
+        if(!empty($panier[$id])){
+            unset($panier[$id]);
+        }
+
+        // On sauvegarde dans la session
+        $session->set("panier", $panier);
+
+        return $this->redirectToRoute("app_billets_index");
+    }
+
+    /**
+     * @Route("/delete", name="delete_all")
+     */
+    public function deleteAll(SessionInterface $session)
+    {
+        $session->remove("panier");
+
+        return $this->redirectToRoute("app_billets_index");
+    }
+
 }
