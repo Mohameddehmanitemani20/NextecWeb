@@ -30,7 +30,7 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="adresse", type="string", length=255, nullable=false)
+     * @ORM\Column(name="adresse", type="string", length=255, nullable=true)
      * @Assert\NotBlank(message="le champs ne doit pas etre vide")
      */
     private $adresse;
@@ -38,14 +38,14 @@ class User implements UserInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_naissance", type="date", nullable=false)
+     * @ORM\Column(name="date_naissance", type="date", nullable=true)
      */
     private $dateNaissance;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255, nullable=false)
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
      * @Assert\NotBlank(message="le champs ne doit pas etre vide")
      * @Assert\Email(message = "The email '{{ value }}' is not a valid email")
      */
@@ -68,7 +68,7 @@ class User implements UserInterface
     /**
      * @var int
      *
-     * @ORM\Column(name="num_tel", type="integer", nullable=false)
+     * @ORM\Column(name="num_tel", type="integer", nullable=true)
      * @Assert\Length(
      *      min = 8,
      *      max = 8,
@@ -81,14 +81,14 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=255, nullable=false)
+     * @ORM\Column(name="password", type="string", length=255, nullable=true)
      */
     private $password;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="prenom", type="string", length=255, nullable=false)
+     * @ORM\Column(name="prenom", type="string", length=255, nullable=true)
      *  @Assert\NotBlank(message="le champs ne doit pas etre vide")
      * @Assert\Length(
      *     min=3,
@@ -107,7 +107,7 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="username", type="string", length=255, nullable=false)
+     * @ORM\Column(name="username", type="string", length=255, nullable=true)
      * @Assert\NotBlank(message="le champs ne doit pas etre vide")
      */
     private $username;
@@ -144,12 +144,26 @@ class User implements UserInterface
     private $disable_token;
 
      /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $verificationCode;
+
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
+
+
+     /**
    * @CaptchaAssert\ValidCaptcha(
    *      message = "CAPTCHA validation failed, try again.",
    *      groups={"registration"}
    * )
    */
   protected $captchaCode;
+
+ 
 
   public function getCaptchaCode()
   {
@@ -360,6 +374,30 @@ class User implements UserInterface
         return $this;
     }
 
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getVerificationCode(): ?string
+    {
+        return $this->verificationCode;
+    }
+
+    public function setVerificationCode(?string $verificationCode): self
+    {
+        $this->verificationCode = $verificationCode;
+
+        return $this;
+    }
+
     public function serialize() {
         return serialize($this->id);
         }
@@ -367,7 +405,8 @@ class User implements UserInterface
         public function unserialize($data) {
         $this->id = unserialize($data);
         }
-    
+
+       
 
 
 }

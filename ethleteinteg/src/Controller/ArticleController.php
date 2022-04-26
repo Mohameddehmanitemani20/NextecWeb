@@ -28,6 +28,7 @@ class ArticleController extends AbstractController
     }
 
      /**
+     * @IsGranted("ROLE_USER") 
      * @Route("/client", name="app_article_index1", methods={"GET"})
      */
     public function index1(ArticleRepository $articleRepository): Response

@@ -28,6 +28,7 @@ class UserController extends AbstractController
 
     
     /**
+     * @IsGranted("ROLE_USER") 
      * @Route("/profile", name="profile", methods={"GET"})
      */
     public function profile(UserRepository $userRepository): Response
@@ -39,6 +40,75 @@ class UserController extends AbstractController
         ]);
        
     }
+
+     /**
+     * @IsGranted("ROLE_USER")
+     * @Route("/ActivateAccountWithCode", name="ActivateAccountWithCode", methods={"GET","POST"})
+     */
+    public function ActivateAccountWithCode(UserRepository $userRepository, Request $request): Response
+    {
+        $error = null;
+        if ( $request->isMethod('POST')) {
+            $code = $request->request->get('verificationcode');
+            $codeUser = $this->getUser()->getVerificationCode();
+            if ( $code == $codeUser){
+                $user = new User();
+                $user = $this->getUser();
+                $user->setVerificationCode(null);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+                return $this->redirectToRoute("app_login");
+            }
+            else{
+                $error = "Please Verify your Code";
+                return $this->render('security/ActivateAccountWithCode.html.twig',[
+                    'error' => $error,
+                ]);
+            }
+        }
+        return $this->render('security/ActivateAccountWithCode.html.twig',[
+            'error' => $error,
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_ADMIN")
+     * @Route("/disable_user/{id}", name="disable_user", methods={"GET", "POST"})
+     */
+    public function disable_user(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        $user->setDisableToken("1");
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+
+    }
+
+    /**
+     * @IsGranted("ROLE_ADMIN")
+     * @Route("/enable_user/{id}", name="enable_user", methods={"GET", "POST"})
+     */
+    public function enable_user(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        $user->setDisableToken(null);
+        $entityManager->persist($user);
+        $entityManager->flush();
+        //$link = $request->headers->get("referer");
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+
+    }
+
+
+    /**
+     * @Route("/DisabledAccount", name="DisabledAccount")
+     */
+    public function DisabledAccount(): Response
+    {
+        return $this->render('user/DisabledAccount.html.twig');
+    }
+
+
 
      /**
      * @Route("/profile/delete", name="delete_profile", methods={"GET"})
@@ -56,6 +126,7 @@ class UserController extends AbstractController
 
 
      /**
+     * @IsGranted("ROLE_USER") 
      * @Route("/profile/edit", name="edit_profile", methods={"GET" , "POST" })
      */
     public function edit_profile(Request $request, EntityManagerInterface $entityManager): Response
@@ -144,6 +215,7 @@ class UserController extends AbstractController
     }
 
 
+    
 
 
 

@@ -9229,7 +9229,7 @@ textarea.is-invalid.tt-hint {
 
 .form-inline {
   display: flex;
-  flex-flow: row wrap;
+  
   align-items: center; }
   .form-inline .form-check {
     width: 100%; }
