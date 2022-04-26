@@ -38,5 +38,39 @@ class Avis
      */
     private $idUser;
 
+    public function getIdAvis(): ?int
+    {
+        return $this->idAvis;
+    }
+
+    public function getNote(): ?int
+    {
+        return $this->note;
+    }
+
+    public function setNote(int $note): self
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    public function getIdUser(): ?User
+    {
+        return $this->idUser;
+    }
+
+    public function setIdUser(?User $idUser): self
+    {
+        $this->idUser = $idUser;
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->note;
+        // TODO: Implement __toString() method.
+    }
+
 
 }

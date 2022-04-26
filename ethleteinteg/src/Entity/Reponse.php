@@ -28,5 +28,28 @@ class Reponse
      */
     private $reponse;
 
+    public function getIdReponse(): ?int
+    {
+        return $this->idReponse;
+    }
+
+    public function getReponse(): ?string
+    {
+        return $this->reponse;
+    }
+
+    public function setReponse(string $reponse): self
+    {
+        $this->reponse = $reponse;
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->reponse;
+        // TODO: Implement __toString() method.
+    }
+
+
 
 }

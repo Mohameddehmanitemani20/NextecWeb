@@ -1,4 +1,10 @@
 {
+    "blackknight467/star-rating-bundle": {
+        "version": "v2.0.1"
+    },
+    "cr/hashcli": {
+        "version": "dev-master"
+    },
     "doctrine/annotations": {
         "version": "1.13",
         "recipe": {
@@ -21,7 +27,7 @@
         "version": "3.2.2"
     },
     "doctrine/dbal": {
-        "version": "3.3.4"
+        "version": "3.3.5"
     },
     "doctrine/deprecations": {
         "version": "v0.5.3"
@@ -68,7 +74,7 @@
         "version": "1.2.3"
     },
     "doctrine/migrations": {
-        "version": "3.4.1"
+        "version": "3.4.2"
     },
     "doctrine/orm": {
         "version": "2.11.2"
@@ -86,7 +92,13 @@
         "version": "v1.0.7"
     },
     "laminas/laminas-code": {
-        "version": "4.5.1"
+        "version": "3.4.1"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.4.0"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.4.1"
     },
     "monolog/monolog": {
         "version": "1.27.0"
@@ -148,7 +160,7 @@
         "version": "1.0.1"
     },
     "psr/container": {
-        "version": "1.1.2"
+        "version": "1.1.1"
     },
     "psr/link": {
         "version": "1.0.0"
@@ -175,7 +187,7 @@
         "version": "4.0.4"
     },
     "sebastian/environment": {
-        "version": "5.1.3"
+        "version": "5.1.4"
     },
     "sebastian/exporter": {
         "version": "4.0.4"
@@ -216,6 +228,12 @@
             "./config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "spipu/html2pdf": {
+        "version": "v5.2.5"
+    },
+    "swiftmailer/swiftmailer": {
+        "version": "v6.3.0"
+    },
     "symfony/asset": {
         "version": "v4.4.40"
     },
@@ -226,7 +244,7 @@
         "version": "v4.4.40"
     },
     "symfony/cache-contracts": {
-        "version": "v2.5.0"
+        "version": "v2.5.1"
     },
     "symfony/config": {
         "version": "v4.4.37"
@@ -266,7 +284,7 @@
         "version": "v4.4.40"
     },
     "symfony/deprecation-contracts": {
-        "version": "v2.5.0"
+        "version": "v2.5.1"
     },
     "symfony/doctrine-bridge": {
         "version": "v4.4.39"
@@ -284,7 +302,7 @@
         "version": "v4.4.37"
     },
     "symfony/event-dispatcher-contracts": {
-        "version": "v1.1.11"
+        "version": "v1.1.12"
     },
     "symfony/expression-language": {
         "version": "v4.4.40"
@@ -331,11 +349,20 @@
             "./src/Kernel.php"
         ]
     },
+    "symfony/google-mailer": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.4",
+            "ref": "f8fd4ddb9b477510f8f4bce2b9c054ab428c0120"
+        }
+    },
     "symfony/http-client": {
         "version": "v4.4.40"
     },
     "symfony/http-client-contracts": {
-        "version": "v2.5.0"
+        "version": "v2.5.1"
     },
     "symfony/http-foundation": {
         "version": "v4.4.39"
@@ -355,7 +382,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "4.3",
-            "ref": "bbfc7e27257d3a3f12a6fb0a42540a42d9623a37"
+            "ref": "97a61eabb351d7f6cb7702039bcfe07fe9d7e03c"
         },
         "files": [
             "./config/packages/mailer.yaml"
@@ -487,10 +514,27 @@
         "version": "v4.4.40"
     },
     "symfony/service-contracts": {
-        "version": "v2.5.0"
+        "version": "v2.5.1"
     },
     "symfony/stopwatch": {
         "version": "v4.4.38"
+    },
+    "symfony/swiftmailer-bundle": {
+        "version": "3.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.5",
+            "ref": "f0b2fccdca2dfd97dc2fd5ad216d5e27c4f895ac"
+        },
+        "files": [
+            "./config/packages/dev/swiftmailer.yaml",
+            "./config/packages/swiftmailer.yaml",
+            "./config/packages/test/swiftmailer.yaml"
+        ]
+    },
+    "symfony/templating": {
+        "version": "v4.4.37"
     },
     "symfony/translation": {
         "version": "4.4",
@@ -506,7 +550,7 @@
         ]
     },
     "symfony/translation-contracts": {
-        "version": "v2.5.0"
+        "version": "v2.5.1"
     },
     "symfony/twig-bridge": {
         "version": "v4.4.40"
@@ -572,6 +616,9 @@
     },
     "symfony/yaml": {
         "version": "v4.4.37"
+    },
+    "tecnickcom/tcpdf": {
+        "version": "6.4.4"
     },
     "theseer/tokenizer": {
         "version": "1.2.1"

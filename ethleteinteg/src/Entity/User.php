@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
 class User
 {
@@ -98,6 +97,11 @@ class User
      * @ORM\Column(name="id_eq", type="integer", nullable=true)
      */
     private $idEq;
+    public function __toString()
+    {
+        return $this->nom;
+        // TODO: Implement __toString() method.
+    }
 
     public function getId(): ?int
     {
@@ -145,7 +149,7 @@ class User
         return $this->nom;
     }
 
-    public function setNom(string $nom): self
+    public function setNom(?string $nom): self
     {
         $this->nom = $nom;
 
