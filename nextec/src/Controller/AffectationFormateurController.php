@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @Route("/affectation/formateur")
@@ -31,6 +32,23 @@ class AffectationFormateurController extends AbstractController
         return $this->render('affectation_formateur/index.html.twig', [
             'affectation_formateurs' => $affectationFormateurs,
         ]);
+    }
+
+
+      /**
+     * @Route("/AffectationJSON", name="AffectationJSON")
+     */
+    public function listformationJSON(EntityManagerInterface $entityManager,NormalizerInterface $Normalizer)
+    {
+        $affectations = $entityManager
+            ->getRepository(AffectationFormateur::class)
+            ->findAll();
+$jsonContent =$Normalizer->normalize($affectations,'json',['groups'=>'post:read']);
+//dump($formations);
+return new Response(json_encode($jsonContent));
+        // return $this->render('formation/formationjson.html.twig', [
+        //     'formations' => $jsonContent,
+        // ]);
     }
 
     /**

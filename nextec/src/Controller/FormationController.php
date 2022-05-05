@@ -21,12 +21,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/formation")
  */
 class FormationController extends AbstractController
 {
+
     /**
      * @Route("/", name="formation_index", methods={"GET"})
      */
@@ -62,6 +65,24 @@ class FormationController extends AbstractController
             'formations' => $formations,'form'=>$form->createView()
         ]);
     }
+
+
+  /**
+     * @Route("/FormationsJSON", name="FormationsJSON")
+     */
+    public function listformationJSON(EntityManagerInterface $entityManager,NormalizerInterface $Normalizer)
+    {
+        $formations = $entityManager
+            ->getRepository(Formation::class)
+            ->findAll();
+$jsonContent =$Normalizer->normalize($formations,'json',['groups'=>'post:read']);
+//dump($formations);
+return new Response(json_encode($jsonContent));
+        // return $this->render('formation/formationjson.html.twig', [
+        //     'formations' => $jsonContent,
+        // ]);
+    }
+
 
 
   /**
@@ -138,12 +159,157 @@ class FormationController extends AbstractController
 
             return $this->redirectToRoute('formation_index', [], Response::HTTP_SEE_OTHER);
         }
+        
 
         return $this->render('formation/new.html.twig', [
             'formation' => $formation,
             'form' => $form->createView(),
         ]);
     }
+
+
+ /**
+     * @Route("/addFormationsJSON", name="addFormationsJSON")
+     */
+    public function AddFormationJSON(Request $request,EntityManagerInterface $entityManager,NormalizerInterface $Normalizer)
+    {
+$content=$request->getContent();
+
+        $formation = new Formation();
+   //  $data=$Normalizer->deserialize($content,Formation::class,'json');
+ $formation->setNomFormation($request->get('nomFormation'));
+     $formation->setProgramme($request->get('programme'));
+    
+$formation->setDateDebut(\DateTime::createFromFormat('Y-m-d',$request->get('dateDebut')));
+    
+   $formation->setDateFin(\DateTime::createFromFormat('Y-m-d',$request->get('dateFin')));
+ $formation->setDispositif($request->get('dispositif'));
+            $entityManager->persist($formation);
+
+            $entityManager->flush();
+$jsonContent =$Normalizer->normalize($formation,'json',['groups'=>'post:read']);
+//dump($formations);
+return new Response('formation ajouté'.json_encode($jsonContent));
+        // return $this->render('formation/formationjson.html.twig', [
+        //     'formations' => $jsonContent,
+        // ]);
+    }
+ /**
+     * @Route("/updateFormationsJSON/{id}", name="updateFormationsJSON")
+     */
+    public function updateFormationJSON($id,FormationRepository $rep,Request $request,SerializerInterface $serializer,EntityManagerInterface $entityManager,NormalizerInterface $Normalizer)
+    {
+$content=json_decode($request->getContent(), true);
+
+        $formation = $rep->find($id);
+
+  empty($request->get('nomFormation')) ? true : $formation->setNomFormation($request->get('nomFormation'));
+ 
+ empty($request->get('programme')) ? true : $formation->setProgramme($request->get('programme'));
+  empty(\DateTime::createFromFormat('Y-m-d',$request->get('dateDebut'))) ? true : $formation->setDateDebut(\DateTime::createFromFormat('Y-m-d',$request->get('dateDebut')));
+
+  empty(\DateTime::createFromFormat('Y-m-d',$request->get('dateFin'))) ? true : $formation->setDateFin(\DateTime::createFromFormat('Y-m-d',$request->get('dateFin')));
+  empty($request->get('dispositif')) ? true : $formation->setDispositif($request->get('dispositif'));
+  $jsonContent =$Normalizer->normalize($formation,'json',['groups'=>'post:read']);
+
+            $entityManager->flush();
+
+return new Response('formation updated'.json_encode($jsonContent));
+  
+    }
+
+
+/**
+     * @Route("/pdfJSON/{id}", name="Formation_showpdfJSON", methods={"GET"})
+     */
+    public function pdfshowJSON($id,Formation $f,ParticipationRepository $rep,FormationRepository $repository,AffectationFormateurRepository $af,NormalizerInterface $Normalizer)
+    {  $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($pdfOptions);
+        $participants = $rep
+        ->findAll();
+        $affectations=$af->findAll();
+        $k=[];
+        $f1=$repository->find($id);
+        foreach($participants as $p)
+        {if($p->getFormation()->getNomFormation()==$f1->getNomFormation())
+{array_push($k,$p->getIdParticipant());
+
+
+
+}}
+
+       $img='data:image;base64,'.base64_encode(@file_get_contents('C:\Users\pc\OneDrive\Pictures\logo.jpeg'));
+     
+        $html=$this->render('formation/pdfshow.html.twig', [
+            'Formation' => $f,
+            'date Début' => $f->getDateDebut()->format( 'd/m/Y'),
+            'date Fin' => $f->getDateFin()->format( 'd/m/Y'),
+            'Programme' => $f->getProgramme(),
+            'img1' =>  $img,
+             'id'=> $f->getIdFormation(),
+             'part'=> $participants ,
+             'affect'=> $affectations
+            
+        ]);
+        $dompdf->loadHtml($html);
+
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $dompdf->stream("mypdf.pdf", [
+            "Attachment" => false
+        ]);
+
+        $jsonContent =$Normalizer->normalize($dompdf,'json',['groups'=>'post:read']);
+
+
+
+    }
+
+
+
+
+
+     /**
+     * @Route("/deleteFormationsJSON/{id}", name="deleteFormationsJSON")
+     */
+    public function deleteFormationJSON($id,FormationRepository $rep,Request $request,SerializerInterface $serializer,EntityManagerInterface $entityManager,NormalizerInterface $Normalizer)
+    {
+$content=json_decode($request->getContent(), true);
+
+        $formation = $rep->find($id);
+
+        $entityManager->remove($formation);
+
+
+            $entityManager->flush();
+            $jsonContent =$Normalizer->normalize($formation,'json',['groups'=>'post:read']);
+
+return new Response('formation supprimée'.json_encode($jsonContent));
+  
+    }
+
+
+
+/**
+     * @Route("/getFormationsJSON/{id}", name="getFormationsJSON")
+     */
+    public function getFormationJSON($id,FormationRepository $rep,Request $request,SerializerInterface $serializer,EntityManagerInterface $entityManager,NormalizerInterface $Normalizer)
+    {
+
+        $formation = $rep->find($id);
+
+       // $entityManager->remove($formation);
+
+
+           // $entityManager->flush();
+            $jsonContent =$Normalizer->normalize($formation,'json',['groups'=>'post:read']);
+
+return new Response(json_encode($jsonContent));
+  
+    }
+
+
 
     /**
      * @Route("/{idFormation}", name="formation_show", methods={"GET"})
@@ -197,6 +363,9 @@ class FormationController extends AbstractController
 
         return $this->redirectToRoute('formation_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+
 
 /**
      * @Route("/pdf/{id}", name="Formation_showpdf", methods={"GET"})
@@ -323,7 +492,7 @@ return $this->render('formation/best.html.twig', [
         $form=$this->createForm(SearchForm::class);
         if( $request->isMethod("POST"))
         {
-            $nom =$request->get('marque');
+            $nom =$request->get('nomF');
             $formations =$repository->findEntities($nom);
         }
 

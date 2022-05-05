@@ -193,7 +193,7 @@ class ParticipationController extends AbstractController
         $twilio_number = "+19403146091";
         
         $client = new Client($account_sid, $auth_token);
-       /* $client->messages->create(
+       $client->messages->create(
             // Where to send a text message (your cell phone?)
             '+21629010200',
             array(
@@ -201,7 +201,7 @@ class ParticipationController extends AbstractController
                 'body' => $msg
             )
         );
-*/
+
       
     }
         return $this->redirectToRoute('list1'); 
