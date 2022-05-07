@@ -1,4 +1,4 @@
-{% extends 'front.html.twig' %}
+{% extends 'back.html.twig' %}
 
 {% block title %}Article index{% endblock %}
 
@@ -13,6 +13,7 @@
                 <th>Contenu</th>
                 <th>Description</th>
                 <th>Nbrlike</th>
+                <th>User</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -23,10 +24,11 @@
                 <td>{{ article.titre }}</td>
                 <td>{{ article.contenu }}</td>
                 <td>{{ article.description }}</td>
-                <td>{{ article.nbrlike }}</td>
+                <td>{{ article.nbrlike }}</td> 
+                <td>{{article.idUser}}
                 <td>
-                    <a href="{{ path('app_article_show', {'idarticle': article.idarticle}) }}">show</a>
-                    <a href="{{ path('app_article_edit', {'idarticle': article.idarticle}) }}">edit</a>
+                    <a class="btn btn-success" href="{{ path('app_article_show', {'idarticle': article.idarticle}) }}">show</a>
+                    <a class="btn btn-primary" href="{{ path('app_article_edit', {'idarticle': article.idarticle}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -37,5 +39,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_article_new') }}">Create new</a>
+    <a class="btn btn-primary w=100" href="{{ path('app_article_new') }}">Create new</a>
 {% endblock %}
