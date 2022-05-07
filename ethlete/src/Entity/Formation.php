@@ -56,5 +56,11 @@ class Formation
      */
     private $programme;
 
+    public function __toString()
+    {
+        return $this->nomFormation;
+    }
+
+
 
 }
