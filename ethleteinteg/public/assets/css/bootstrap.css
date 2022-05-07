@@ -1877,7 +1877,7 @@ pre code {
 }
 
 .form-control::-ms-expand {
-  background-color: transparent;
+  background-color: #002752;
   border: 0;
 }
 
@@ -4929,10 +4929,10 @@ input[type="button"].btn-block {
   display: inline-block;
   padding: 0.25em 0.4em;
   font-size: 75%;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1;
   text-align: center;
-  white-space: nowrap;
+  
   vertical-align: baseline;
   border-radius: 0.25rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -4961,11 +4961,12 @@ a.badge:hover, a.badge:focus {
   padding-right: 0.6em;
   padding-left: 0.6em;
   border-radius: 10rem;
+  background-color: #dd00ff3a;
 }
 
 .badge-primary {
   color: #fff;
-  background-color: #007bff;
+  background-color: #ffffff;
 }
 
 a.badge-primary:hover, a.badge-primary:focus {
@@ -4995,7 +4996,7 @@ a.badge-secondary:focus, a.badge-secondary.focus {
 
 .badge-success {
   color: #fff;
-  background-color: #28a745;
+  background-color: #fa00922b;
 }
 
 a.badge-success:hover, a.badge-success:focus {
@@ -10001,6 +10002,22 @@ a.text-dark:hover, a.text-dark:focus {
   body {
     min-width: 992px !important;
   }
+  
+  .card {
+   
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+  }
+  
+
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  
+
+  .container {
+    padding: 2px 16px;
+  }
   .container {
     min-width: 992px !important;
   }
@@ -10034,5 +10051,6 @@ a.text-dark:hover, a.text-dark:focus {
     color: inherit;
     border-color: #dee2e6;
   }
+ 
 }
 /*# sourceMappingURL=bootstrap.css.map */

@@ -67,6 +67,14 @@
     subClass.prototype.constructor = subClass;
     subClass.__proto__ = superClass;
   }
+  var elements = document.getElementsByClassName("column");
+  var i;
+  function gridView() {
+    for (i = 0; i < elements.length; i++) {
+      elements[i].style.width = "50%";
+    }
+  }
+
 
   /**
    * --------------------------------------------------------------------------

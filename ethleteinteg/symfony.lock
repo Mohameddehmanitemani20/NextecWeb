@@ -1,4 +1,19 @@
 {
+    "abraham/twitteroauth": {
+        "version": "0.7.4"
+    },
+    "captcha-com/captcha": {
+        "version": "4.2.5"
+    },
+    "captcha-com/symfony-captcha-bundle": {
+        "version": "4.2.12"
+    },
+    "clue/stream-filter": {
+        "version": "v1.6.0"
+    },
+    "cmen/google-charts-bundle": {
+        "version": "5.0.0"
+    },
     "doctrine/annotations": {
         "version": "1.13",
         "recipe": {
@@ -82,11 +97,83 @@
     "egulias/email-validator": {
         "version": "3.1.2"
     },
+    "elasticsearch/elasticsearch": {
+        "version": "v7.17.0"
+    },
+    "ezimuel/guzzlestreams": {
+        "version": "3.0.1"
+    },
+    "ezimuel/ringphp": {
+        "version": "1.2.0"
+    },
+    "facebook/graph-sdk": {
+        "version": "5.7.0"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.7"
     },
+    "friendsofsymfony/elastica-bundle": {
+        "version": "6.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "5.0",
+            "ref": "46c9cd2c1e07f0fcfd97e96f12b03b2e0845c4cd"
+        },
+        "files": [
+            "./config/packages/fos_elastica.yaml"
+        ]
+    },
+    "happyr/linkedin-api-client": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "f407e3d9af98d1b391cc671d3c5790b79f1907e6"
+        },
+        "files": [
+            "./config/packages/linkedin.yaml"
+        ]
+    },
+    "knplabs/knp-components": {
+        "version": "v3.4.0"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.8.0"
+    },
+    "knplabs/knp-snappy": {
+        "version": "v1.4.1"
+    },
+    "knplabs/knp-snappy-bundle": {
+        "version": "1.9",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.5",
+            "ref": "c81bdcf4a9d4e7b1959071457f9608631865d381"
+        },
+        "files": [
+            "./config/packages/knp_snappy.yaml"
+        ]
+    },
     "laminas/laminas-code": {
         "version": "4.5.1"
+    },
+    "martin-georgiev/social-post": {
+        "version": "v1.0"
+    },
+    "martin-georgiev/social-post-bundle": {
+        "version": "v3.1.0"
+    },
+    "massive/pdf-bundle": {
+        "version": "0.4.0"
+    },
+    "mercuryseries/flashy-bundle": {
+        "version": "v5.1.0"
+    },
+    "mgilet/notification-bundle": {
+        "version": "4.0"
     },
     "monolog/monolog": {
         "version": "1.27.0"
@@ -97,11 +184,35 @@
     "nikic/php-parser": {
         "version": "v4.13.2"
     },
+    "nyholm/dsn": {
+        "version": "2.0.1"
+    },
+    "pagerfanta/pagerfanta": {
+        "version": "v3.6.1"
+    },
     "phar-io/manifest": {
         "version": "2.0.3"
     },
     "phar-io/version": {
         "version": "3.2.1"
+    },
+    "php-http/curl-client": {
+        "version": "v1.7.1"
+    },
+    "php-http/discovery": {
+        "version": "1.14.1"
+    },
+    "php-http/httplug": {
+        "version": "v1.1.0"
+    },
+    "php-http/message": {
+        "version": "1.13.0"
+    },
+    "php-http/message-factory": {
+        "version": "v1.0.2"
+    },
+    "php-http/promise": {
+        "version": "1.1.0"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
@@ -150,11 +261,20 @@
     "psr/container": {
         "version": "1.1.2"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/link": {
         "version": "1.0.0"
     },
     "psr/log": {
         "version": "1.1.4"
+    },
+    "react/promise": {
+        "version": "v2.9.0"
+    },
+    "ruflin/elastica": {
+        "version": "7.1.5"
     },
     "sebastian/cli-parser": {
         "version": "1.0.1"
@@ -575,6 +695,12 @@
     },
     "theseer/tokenizer": {
         "version": "1.2.1"
+    },
+    "tijsverkoyen/css-to-inline-styles": {
+        "version": "2.2.4"
+    },
+    "twig/cssinliner-extra": {
+        "version": "v3.3.5"
     },
     "twig/extra-bundle": {
         "version": "v3.3.8"

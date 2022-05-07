@@ -27,10 +27,20 @@
   <link href="{{ asset('assets/css/sidebar-menu.css')}}" rel="stylesheet"/>
   <!-- Custom Style-->
   <link href="{{ asset('assets/css/app-style.css')}}" rel="stylesheet"/>
+  <link href="{{ asset('assets/css/card.css')}}" rel="stylesheet"/>
+  <link href="{{ asset('assets/css/button.css')}}" rel="stylesheet"/>
+  <link href="{{ asset('assets/css/flipcard.css')}}" rel="stylesheet"/>
+  <link href="{{ asset('assets/css/slider.css')}}" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
+  
+  
+  
+
+
   
 </head>
 
-<body class="bg-theme bg-theme1">
+<body class="bg-theme bg-theme5">
  
 <!-- Start wrapper-->
  <div id="wrapper">
@@ -39,58 +49,48 @@
    <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
      <div class="brand-logo">
   
-       <img src="{{ asset('assets/images/logo.png')}}" class="logo-icon" alt="logo icon">
-       <h5 class="logo-text">Dashtreme Admin</h5>
+       <img src="{{ asset('assets/images/logowhite.png')}}"  height="20" width="78">
+       <h5 class="logo-text">Dashboard</h5>
   
    </div>
    <ul class="sidebar-menu do-nicescrol">
-      <li class="sidebar-header">MAIN NAVIGATION</li>
+      <li class="sidebar-header"></li>
+        
       <li>
-        <a href="">
-          <i class="zmdi zmdi-view-dashboard"  ></i> <span>Gestion des formations</span>
+        <a href="{{ path('produit') }}">
+          <i class="zmdi zmdi-format-list-bulleted"></i> <span>Gestion Produits</span>
+        </a>
+      </li>
+      
+
+      <li>
+        <a href="{{ path('fournisseur') }}">
+          <i class="zmdi zmdi-grid"></i> <span>Gestion Fournisseurs</span>
         </a>
       </li>
 
       <li>
-        <a href="">
-          <i class="zmdi zmdi-invert-colors" ></i> <span>Gestion des affectations</span>
+        <a href="{{ path('reclamation') }}">
+          <i class="zmdi zmdi-calendar-check"></i> <span>Gestion Reclamations</span>
+          <small class="badge float-right badge-success"></small>
         </a>
       </li>
 
       <li>
-        <a href="forms.html">
-          <i class="zmdi zmdi-format-list-bulleted"></i> <span>Forms</span>
+        <a href="{{ path('commande') }}">
+          <i class="zmdi zmdi-face"></i> <span>Gestion Commandes</span>
         </a>
       </li>
 
       <li>
-        <a href="tables.html">
-          <i class="zmdi zmdi-grid"></i> <span>Tables</span>
-        </a>
-      </li>
-
-      <li>
-        <a href="calendar.html">
-          <i class="zmdi zmdi-calendar-check"></i> <span>Calendar</span>
-          <small class="badge float-right badge-light">New</small>
-        </a>
-      </li>
-
-      <li>
-        <a href="profile.html">
-          <i class="zmdi zmdi-face"></i> <span>Profile</span>
-        </a>
-      </li>
-
-      <li>
-        <a href="login.html" target="_blank">
-          <i class="zmdi zmdi-lock"></i> <span>Login</span>
+        <a href="{{ path('raison') }}">
+          <i class="zmdi zmdi-lock"></i> <span>Raisons</span>
         </a>
       </li>
 
        <li>
-        <a href="register.html" target="_blank">
-          <i class="zmdi zmdi-account-circle"></i> <span>Registration</span>
+        <a href="{{ path('categorie') }}">
+          <i class="zmdi zmdi-account-circle"></i> <span>Categories</span>
         </a>
       </li>
 
@@ -114,10 +114,7 @@
      </a>
     </li>
     <li class="nav-item">
-      <form class="search-bar">
-        <input type="text" class="form-control" placeholder="Enter keywords">
-         <a href="javascript:void();"><i class="icon-magnifier"></i></a>
-      </form>
+     
     </li>
   </ul>
      
@@ -514,6 +511,11 @@
  
   <!-- Index js -->
   <script src="{{ asset('ssets/js/index.js')}}"></script>
+ 
+  <!-- Flashy depends on jQuery -->
+    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- Load Flashy default JavaScript -->
+    <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
 
   
 </body>
