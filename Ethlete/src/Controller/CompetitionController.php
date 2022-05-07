@@ -4,11 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Competition;
 use App\Form\CompetitionType;
+use App\Form\SearchForm;
+use App\Repository\CompetitionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Spipu\Html2Pdf\Html2Pdf;
+use App\Service\T_HTML2PDF;
+
+
+
 
 /**
  * @Route("/competition")
@@ -18,11 +26,16 @@ class CompetitionController extends AbstractController
     /**
      * @Route("/", name="app_competition_index", methods={"GET"})
      */
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
-        $competitions = $entityManager
+        $donne = $entityManager
             ->getRepository(Competition::class)
             ->findAll();
+        $competitions = $paginator->paginate(
+            $donne,
+            $request->query->getInt('page',1),4
+
+        );
 
         return $this->render('competition/index.html.twig', [
             'competitions' => $competitions,
@@ -49,6 +62,7 @@ class CompetitionController extends AbstractController
             'competition' => $competition,
             'form' => $form->createView(),
         ]);
+
     }
 
     /**
@@ -86,11 +100,58 @@ class CompetitionController extends AbstractController
      */
     public function delete(Request $request, Competition $competition, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$competition->getIdCompetition(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $competition->getIdCompetition(), $request->request->get('_token'))) {
             $entityManager->remove($competition);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_competition_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @Route("/{idCompetition}/competition_pdf", name="competition", methods={"GET"})
+     */
+    public function showPdf(EntityManagerInterface $entityManager): Response
+    {
+        $competitions = $entityManager
+            ->getRepository(Competition::class)
+            ->findAll();
+        $datee = new \DateTime('@' . strtotime('now'));;
+
+        $template = $this->render('competition/print.html.twig', [
+            'competitions' => $competitions,
+            'datee' => $datee
+
+        ]);
+        $html2pdf = new T_HTML2PDF('P', 'A4', 'fr', true, 'UTF-8', array(10, 15, 10, 15));
+        $html2pdf->create('P', 'A4', 'fr', true, 'UTF-8', array(10, 15, 10, 15));
+        return $html2pdf->generatePdf($template, "facture");
+    }
+
+    /**
+     * @Route("/", name="app_competition_recherche", methods={"POST"})
+     */
+    public function rechercher(Request $request, PaginatorInterface $paginator,CompetitionRepository $repository)
+    {
+        $form=$this->createForm(SearchForm::class);
+        if( $request->isMethod("POST"))
+        {
+            $nom =$request->get('nom');
+            $competitions =$repository->findEntities($nom);
+            $competitions = $paginator->paginate(
+                $competitions,
+                $request->query->getInt('page',1),4
+
+            );
+        }
+
+        return $this->render('competition/index.html.twig', [
+            'competitions' => $competitions,'form'=>$form->createView()
+        ]);}
+
+
+
+
+
+
 }

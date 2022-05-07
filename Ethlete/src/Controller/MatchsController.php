@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Matchs;
 use App\Form\MatchsType;
+use App\Service\T_HTML2PDF;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,14 +20,17 @@ class MatchsController extends AbstractController
     /**
      * @Route("/", name="app_matchs_index", methods={"GET"})
      */
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
-        $matchs = $entityManager
+        $donne = $entityManager
             ->getRepository(Matchs::class)
             ->findAll();
+        $match = $paginator->paginate(
+            $donne,
+            $request->query->getInt('page',1),4);
 
         return $this->render('matchs/index.html.twig', [
-            'matchs' => $matchs,
+            'matchs' => $match,
         ]);
     }
     /**
@@ -33,12 +38,12 @@ class MatchsController extends AbstractController
      */
     public function userindex(EntityManagerInterface $entityManager): Response
     {
-        $matchs = $entityManager
+        $match = $entityManager
             ->getRepository(Matchs::class)
             ->findAll();
 
         return $this->render('matchs/userindex.html.twig', [
-            'matchs' => $matchs,
+            'matchs' => $match,
         ]);
     }
     /**
@@ -113,5 +118,39 @@ class MatchsController extends AbstractController
         }
 
         return $this->redirectToRoute('app_matchs_index', [], Response::HTTP_SEE_OTHER);
+    }
+    /**
+     * @Route("/{idMatch}/matchs_pdf", name="match", methods={"GET"})
+     */
+    public function showPdf(EntityManagerInterface $entityManager): Response
+    {
+        $match = $entityManager
+            ->getRepository(Matchs::class)
+            ->findAll();
+        $datee = new \DateTime('@' . strtotime('now'));;
+
+        $template = $this->render('matchs/print.html.twig', [
+            'matchs' => $match,
+            'datee' => $datee
+
+        ]);
+        $html2pdf = new T_HTML2PDF('P', 'A4', 'fr', true, 'UTF-8', array(10, 15, 10, 15));
+        $html2pdf->create('P', 'A4', 'fr', true, 'UTF-8', array(10, 15, 10, 15));
+        return $html2pdf->generatePdf($template, "facture");
+    }
+
+    /**
+     * @Route("/", name="app_match_recherche", methods={"POST"})
+     */
+    public function rechercheByNom(Request $request)
+    {
+        $em = $this->getDoctrine()->getManagers();
+        $match = $em->getRepository(Matchs::class)->findAll();
+
+        if ($request->isMethod("POST")) {
+            $nom = $request->get('nom');
+            $match = $em->getRepository("App:Match")->findBy(array('nom' => $nom));
+        }
+        return $this->render('matchs/index.html.twig', array('matchs' => $match));
     }
 }

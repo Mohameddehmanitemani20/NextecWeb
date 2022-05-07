@@ -4,6 +4,10 @@
 
 {% block body %}
     <h1>Matchs index</h1>
+<form method= "POST">
+    <input  type="text" name ="nom">
+    <input  type="submit" value ="recherche  selon nom Match ">
+</form>
 
     <table class="table">
         <thead>
@@ -26,6 +30,7 @@
                 <td>
                     <a href="{{ path('app_matchs_show', {'idMatch': match.idMatch}) }}">show</a>
                     <a href="{{ path('app_matchs_edit', {'idMatch': match.idMatch}) }}">edit</a>
+                    <a href="{{ path('match', {'idMatch': match.idMatch}) }}">showPdf</a>
                 </td>
             </tr>
         {% else %}
@@ -33,8 +38,14 @@
                 <td colspan="6">no records found</td>
             </tr>
         {% endfor %}
+        {{ knp_pagination_render(matchs) }}
         </tbody>
     </table>
+    <div>
+        <a href="{{ path('app_matchs_new') }}">Create new</a>
+    </div>
 
-    <a href="{{ path('app_matchs_new') }}">Create new</a>
+    <div>
+        <a href="{{ path('app_contact') }}">send mail</a>
+    </div>
 {% endblock %}

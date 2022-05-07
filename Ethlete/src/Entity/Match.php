@@ -30,6 +30,7 @@ class Match
      * * @Assert\NotEqualTo(
      *     value = 0,
      *     message = "Le nombre d'equipe ne doit pas etre égal a 0 "
+     * )
      */
     private $equipe1;
 
