@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="article", indexes={@ORM\Index(name="idUser", columns={"idUser"})})
  * @ORM\Entity
- * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  */
 class Article
 {
@@ -59,71 +58,6 @@ class Article
      * })
      */
     private $iduser;
-
-    public function getIdarticle(): ?string
-    {
-        return $this->idarticle;
-    }
-
-    public function getTitre(): ?string
-    {
-        return $this->titre;
-    }
-
-    public function setTitre(string $titre): self
-    {
-        $this->titre = $titre;
-
-        return $this;
-    }
-
-    public function getContenu(): ?string
-    {
-        return $this->contenu;
-    }
-
-    public function setContenu(string $contenu): self
-    {
-        $this->contenu = $contenu;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getNbrlike(): ?int
-    {
-        return $this->nbrlike;
-    }
-
-    public function setNbrlike(int $nbrlike): self
-    {
-        $this->nbrlike = $nbrlike;
-
-        return $this;
-    }
-
-    public function getIduser()
-    {
-        return $this->iduser;
-    }
-
-    public function setIduser(?User $iduser): self
-    {
-        $this->iduser = $iduser;
-
-        return $this;
-    }
 
 
 }
