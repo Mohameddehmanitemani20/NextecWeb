@@ -1,7 +1,10 @@
-{% extends 'back.html.twig' %}
+{% extends 'front.html.twig' %}
 
 
 {% block title %}Votre panier{% endblock %}
+
+{% block navbar %}
+{% endblock %}
 
 {% block body %}
     <section class="bg-light p-3">
@@ -57,6 +60,9 @@
             <td>
                 <a href="{{path("app_payment_checkout")}}" class="btn btn-success">
                     <i class="bi bi-cart-x">Confirmer la commande</i>
+                </a>
+                <a href="{{path("event_showf")}}" class="btn btn-success">
+                    <i class="bi bi-cart-x">Retour aux Evenements</i>
                 </a>
             </td>
         </tr>

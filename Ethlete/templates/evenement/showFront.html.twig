@@ -12,6 +12,7 @@
                     </div>
                 </div>
             </div>
+            
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 3rem; " >
                 {% for evenement in evenements %}
 
@@ -19,7 +20,7 @@
                     <div class="outer">
                         <img src="{{asset('/uploads/' ~ evenement.imagee )}}" style="width:100%">
                         <div class="content animated fadeInLeft">
-                            <h1>{{ evenement.typeE }}<br/> {{ evenement.nomEvent }}</h1>
+                            <h3>{{ evenement.typeE }}<br/> {{ evenement.nomEvent }}</h3>
                             <p>>Du {{ evenement.dateDebut ? evenement.dateDebut|date('d/m/Y') : '' }}
                                 Au {{ evenement.dateFin ? evenement.dateFin|date('d/m/Y') : '' }}</p>
 

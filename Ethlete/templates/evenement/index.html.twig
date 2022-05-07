@@ -13,9 +13,9 @@
                 <th>NomEvent</th>
                 <th>DateDebut</th>
                 <th>DateFin</th>
-                <th>Typee</th>
+                <th>Type Event</th>
                 <th>Lieu</th>
-                <th>Prixu</th>
+                <th>Prix</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -33,6 +33,8 @@
                 <td>
                     <a href="{{ path('app_evenement_show', {'idEvent': evenement.idEvent}) }}">show</a>
                     <a href="{{ path('app_evenement_edit', {'idEvent': evenement.idEvent}) }}">edit</a>
+                    <a href="{{ path('eventPDF', {'id': evenement.idEvent}) }}">print</a>
+
                 </td>
             </tr>
         {% else %}

@@ -7,6 +7,7 @@ use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @Route("/billets")
@@ -38,7 +39,7 @@ class BilletsController extends AbstractController{
     /**
      * @Route("/add/{id}", name="add")
      */
-    public function add(Evenement $evenement, SessionInterface $session)
+    public function add(Evenement $evenement, SessionInterface $session ,EntityManagerInterface $entityManager)
     {
         // On récupère le panier actuel
         $panier = $session->get("panier", []);
@@ -52,6 +53,7 @@ class BilletsController extends AbstractController{
 
         // On sauvegarde dans la session
         $session->set("panier", $panier);
+       
 
         return $this->redirectToRoute("app_billets_index");
     }

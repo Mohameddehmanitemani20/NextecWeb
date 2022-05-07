@@ -46,28 +46,17 @@
         </div>
         <ul class="sidebar-menu do-nicescrol">
             <li class="sidebar-header">MAIN NAVIGATION</li>
+           
+
             <li>
-                <a href=""{{ path('event') }}"">
-                <a href="{{ path('event') }}" class="btn btn-primary btn-lg square" role="button">Gestion Evenements</a>
-                <span></span>
-                </a>
-            </li>
-            <li>
-                <a href=""{{ path('inter') }}"">
-                <a href="{{ path('inter') }}" class="btn btn-primary btn-lg square" role="button">Gestion intervenants</a>
-                <span></span>
+                <a href="{{ path('inter') }}">
+                    <i class="zmdi zmdi-format-list-bulleted"></i> <span>Gestion intervenants</span>
                 </a>
             </li>
 
             <li>
-                <a href="forms.html">
-                    <i class="zmdi zmdi-format-list-bulleted"></i> <span>Forms</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="tables.html">
-                    <i class="zmdi zmdi-grid"></i> <span>Tables</span>
+                <a  href="{{ path('event') }}">
+                    <i class="zmdi zmdi-grid"></i> <span>Gestion Evenements </span>
                 </a>
             </li>
 

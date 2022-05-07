@@ -44,6 +44,16 @@ class IntervenantRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+    public function findEntities($str){
+        return $this->getEntityManager()
+            ->createQuery(
+                "SELECT p
+                FROM APP\Entity\Intervenant p
+                WHERE p.nom LIKE :str"
+            )
+            ->setParameter('str', '%'.$str.'%')
+            ->getResult();
+    }
 
     // /**
     //  * @return Intervenant[] Returns an array of Intervenant objects

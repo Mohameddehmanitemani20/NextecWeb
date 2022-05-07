@@ -7,7 +7,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity
  * @UniqueEntity("email")
@@ -34,6 +34,7 @@ class Intervenant
      * @ORM\Column(name="id_inter", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("post:read")
      */
     private $idInter;
 
@@ -41,6 +42,7 @@ class Intervenant
      * @var string
      *
      * @ORM\Column(name="image_In", type="string", length=100, nullable=false)
+     * @Groups("post:read")
      */
     private $imageIn;
 
@@ -49,6 +51,7 @@ class Intervenant
      *
      *  @Assert\NotBlank(message=" Le champ du nom doit etre non vide")
      * @ORM\Column(name="nom", type="string", length=30, nullable=false)
+     * @Groups("post:read")
      */
     private $nom;
 
@@ -57,6 +60,7 @@ class Intervenant
      *
      * @Assert\NotBlank(message="prénom doit etre non vide")
      * @ORM\Column(name="prenom", type="string", length=30, nullable=false)
+     * @Groups("post:read")
      */
     private $prenom;
 
@@ -66,6 +70,7 @@ class Intervenant
      *     message = "The email '{{ value }}' is not a valid email."
      * )
      * @ORM\Column(name="email", type="string", length=50, unique=true)
+     * @Groups("post:read")
      */
     private $email;
 
@@ -80,6 +85,7 @@ class Intervenant
      * @var string
      *
      * @ORM\Column(name="id_typeint", type="string", length=50, nullable=false)
+     * @Groups("post:read")
      */
     private $idTypeint;
 

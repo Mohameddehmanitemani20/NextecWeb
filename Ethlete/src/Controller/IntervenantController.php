@@ -10,6 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/intervenant")
@@ -29,7 +32,78 @@ class IntervenantController extends AbstractController
             'intervenants' => $intervenants,
         ]);
     }
+    /**
+     * @Route("/IntJSON", name="IntJSON")
+     */
+    public function listJSON(EntityManagerInterface $entityManager,NormalizerInterface $Normalizer)
+    {
+        $int = $entityManager
+            ->getRepository(Intervenant::class)
+            ->findAll();
+$jsonContent =$Normalizer->normalize($int,'json',['groups'=>'post:read']);
 
+return new Response(json_encode($jsonContent));
+       
+    }
+/**
+     * @Route("/addJSON/add", name="addJSON")
+     */
+    public function AddJSON(Request $request,EntityManagerInterface $entityManager,NormalizerInterface $Normalizer)
+    {
+$content=$request->getContent();
+
+$intervenant = new Intervenant();
+  
+ $intervenant->setImageIn($request->get('imageIn'));
+     $intervenant->setPrenom($request->get('prenom'));
+    
+     $intervenant->setEmail($request->get('email'));
+ $intervenant->setNom($request->get('nom'));
+$intervenant->setIdTypeint('sponsor');
+$intervenant->setTelephone(24030100);
+            $entityManager->persist($intervenant);
+
+            $entityManager->flush();
+$jsonContent =$Normalizer->normalize($intervenant,'json',['groups'=>'post:read']);
+
+return new Response('Intervenant ajouté'.json_encode($jsonContent));
+       
+    }
+
+     /**
+     * @Route("/deleteJSON/{id}", name="deleteJSON")
+     */
+    public function deleteJSON($id,IntervenantRepository $rep,Request $request,SerializerInterface $serializer,EntityManagerInterface $entityManager,NormalizerInterface $Normalizer)
+    {
+$content=json_decode($request->getContent(), true);
+
+        $int = $rep->find($id);
+
+        $entityManager->remove($int);
+
+
+            $entityManager->flush();
+            $jsonContent =$Normalizer->normalize($int,'json',['groups'=>'post:read']);
+
+return new Response('Intervenant supprimé'.json_encode($jsonContent));
+  
+    }
+
+
+/**
+     * @Route("/", name="app_recherche", methods={"GET","POST"})
+     */
+    public function rechercher(Request $request,IntervenantRepository $repository)
+    {
+        if( $request->isMethod("POST"))
+        {
+            $nom =$request->get('nom');
+            $intervenants =$repository->findEntities($nom);
+        }
+
+        return $this->render('intervenant/index.html.twig', [
+            'intervenants' => $intervenants,
+        ]);}
     /**
      * @Route("/new", name="app_intervenant_new", methods={"GET", "POST"})
      */

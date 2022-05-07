@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 
 /**
@@ -29,7 +31,7 @@ class EvenementController extends AbstractController
         $evenements = $paginator->paginate(
             $donnees, // Requête contenant les données à paginer (ici nos events)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-            6// Nombre de résultats par page
+            3// Nombre de résultats par page
         );
 
         return $this->render('evenement/index.html.twig', [
@@ -59,13 +61,27 @@ class EvenementController extends AbstractController
     /**
      * @Route("/new", name="app_evenement_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $evenement = new Evenement();
         $form = $this->createForm(Evenement1Type::class, $evenement);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $email = (new TemplatedEmail())
+                ->from('quantechp@gmail.com')
+                ->to($evenement->getIdInter()->getEmail())
+                ->subject('Invitation')
+                ->htmlTemplate('template.html.twig')
+                ->context([
+                    'nom' => $evenement->getIdInter()->getNom(),
+                    'date' => $evenement->getDateDebut(),
+                    'lieu' => $evenement->getLieu(),
+                ]);
+
+
+            $mailer->send($email);
             $file = $form->get('imagee')->getData();
             $Filename = md5(uniqid()).'.'.$file->guessExtension();
             try {
@@ -86,6 +102,11 @@ class EvenementController extends AbstractController
         return $this->render('evenement/new.html.twig', [
             'evenement' => $evenement,
             'form' => $form->createView(),
+        ]);
+        return $this->render('evenement/template.html.twig', [
+            'evenement' => $evenement,
+            'nom' => $evenement->getIdInter()->getNom(),
+            'lieu' => $evenement->getLieu(),
         ]);
     }
 
@@ -132,4 +153,24 @@ class EvenementController extends AbstractController
 
         return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @Route("/{id}/eventPDF", name="eventPDF", methods={"GET"})
+     */
+    public function showPdf(Evenement $evenement): Response
+    {       
+        
+        $datee= new \DateTime('@'.strtotime('now'));;
+
+        return $this->render('evenement/print.html.twig', ['evenement' => $evenement,] );
+
+ 
+ 
+      $html2pdf = new T_HTML2PDF('P', 'A4', 'fr', true, 'UTF-8', array(10, 15, 10, 15));
+      $html2pdf->create('P', 'A4', 'fr', true, 'UTF-8', array(10, 15, 10, 15));
+ 
+ 
+      return $html2pdf->generatePdf($template, "facture");
+    }
+
 }
