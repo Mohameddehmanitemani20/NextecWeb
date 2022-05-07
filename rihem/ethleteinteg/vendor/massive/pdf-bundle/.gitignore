@@ -1,0 +1,19 @@
+/node_modules/
+/Tests/app/cache/*
+/Tests/app/logs/*
+/Tests/Resources/app/cache/*
+/Tests/Resources/app/logs/*
+/composer.phar
+/composer.lock
+/.sass-cache/
+/vendor/
+*~
+
+# IDEs
+.idea/*
+*.iml
+*.DS_Store
+
+# php-cs-fixer
+/.php_cs
+/.php_cs.cache

@@ -1,0 +1,29 @@
+{
+    "name": "massive/pdf-bundle",
+    "description": "The Massive Bundle for managing pdf documents",
+    "license": "MIT",
+    "keywords": ["massive", "pdf"],
+    "authors": [
+        {
+            "name": "MassiveArt Webservices GmbH",
+            "homepage": "https://github.com/massiveart/MassivePdfBundle/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "knplabs/knp-snappy-bundle": "^1.4",
+        "twig/twig": "^1.0 || ^2.0 || ^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Massive\\Bundle\\PdfBundle\\": ""
+        }
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.13"
+    },
+    "scripts": {
+        "php-cs": "vendor/bin/php-cs-fixer fix --verbose --diff --dry-run",
+        "php-cs-fix": "vendor/bin/php-cs-fixer fix --verbose --diff"
+    }
+}
