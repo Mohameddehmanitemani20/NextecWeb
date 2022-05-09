@@ -3,15 +3,31 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
+/**
+ * @ORM\Entity
+ * @UniqueEntity("email")
+ */
 /**
  * Intervenant
  *
  * @ORM\Table(name="intervenant")
  * @ORM\Entity
  */
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\IntervenantRepository")
+ * @UniqueEntity(fields={"nom","prenom"}, message="Cet intervenant existe  déjà  .")
+ */
 class Intervenant
+{ public function __toString()
 {
+    return $this->nom;
+}
     /**
      * @var int
      *
@@ -31,6 +47,7 @@ class Intervenant
     /**
      * @var string
      *
+     *  @Assert\NotBlank(message=" Le champ du nom doit etre non vide")
      * @ORM\Column(name="nom", type="string", length=30, nullable=false)
      */
     private $nom;
@@ -38,14 +55,17 @@ class Intervenant
     /**
      * @var string
      *
+     * @Assert\NotBlank(message="prénom doit etre non vide")
      * @ORM\Column(name="prenom", type="string", length=30, nullable=false)
      */
     private $prenom;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=50, nullable=false)
+     *@Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email."
+     * )
+     * @ORM\Column(name="email", type="string", length=50, unique=true)
      */
     private $email;
 
@@ -62,6 +82,83 @@ class Intervenant
      * @ORM\Column(name="id_typeint", type="string", length=50, nullable=false)
      */
     private $idTypeint;
+
+    public function getIdInter(): ?int
+    {
+        return $this->idInter;
+    }
+
+    public function getImageIn()
+    {
+        return $this->imageIn;
+    }
+
+    public function setImageIn( $imageIn)
+    {
+        $this->imageIn = $imageIn;
+
+        return $this;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getIdTypeint(): ?string
+    {
+        return $this->idTypeint;
+    }
+
+    public function setIdTypeint(string $idTypeint): self
+    {
+        $this->idTypeint = $idTypeint;
+
+        return $this;
+    }
 
 
 }

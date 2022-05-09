@@ -5,12 +5,19 @@
         "php": ">=7.1.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
+<<<<<<< HEAD
         "blackknight467/star-rating-bundle": "^2.0",
         "cr/hashcli": "dev-master",
+=======
+        "captcha-com/symfony-captcha-bundle": "4.*",
+>>>>>>> c21e6eb047b191be15a6675441eb2b832a6083f6
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.6",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.11",
+        "knpuniversity/oauth2-client-bundle": "^2.10",
+        "league/oauth2-facebook": "^2.2",
+        "league/oauth2-google": "^4.0",
         "phpdocumentor/reflection-docblock": "^5.3",
         "sensio/framework-extra-bundle": "^5.1",
         "spipu/html2pdf": "^5.2",
@@ -40,8 +47,14 @@
         "symfony/web-link": "4.4.*",
         "symfony/web-server-bundle": "4.4.*",
         "symfony/yaml": "4.4.*",
+        "symfonycasts/verify-email-bundle": "^1.10",
         "twig/extra-bundle": "^2.12|^3.0",
+<<<<<<< HEAD
         "twig/twig": "~2.0"
+=======
+        "twig/twig": "^2.12|^3.0",
+        "twilio/sdk": "^6.36"
+>>>>>>> c21e6eb047b191be15a6675441eb2b832a6083f6
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",

@@ -25,7 +25,11 @@ class SearchForm extends AbstractType
                 'data_class' => SearchData::class,
                 'method'     => 'GET',
                 'csrf_protection' => false,
+<<<<<<< HEAD
                 'equipe'=>null
+=======
+                'user'=>null
+>>>>>>> c21e6eb047b191be15a6675441eb2b832a6083f6
              
 
         ]);
@@ -46,7 +50,11 @@ class SearchForm extends AbstractType
             'label' => false,
             'required' => false,
             'attr' => [
+<<<<<<< HEAD
                 'placeholder' => 'entrez le Nom d equipe'
+=======
+                'placeholder' => 'entrez le Nom'
+>>>>>>> c21e6eb047b191be15a6675441eb2b832a6083f6
             ]
         ])
         ->add('p', TextType::class, [

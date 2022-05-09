@@ -13,6 +13,12 @@ return [
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
     Symfony\Bundle\WebServerBundle\WebServerBundle::class => ['dev' => true],
+<<<<<<< HEAD
     Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
     blackknight467\StarRatingBundle\StarRatingBundle::class => ['all' => true],
+=======
+    Captcha\Bundle\CaptchaBundle\CaptchaBundle::class => ['all' => true],
+    SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle::class => ['all' => true],
+    KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle::class => ['all' => true],
+>>>>>>> c21e6eb047b191be15a6675441eb2b832a6083f6
 ];
